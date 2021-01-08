@@ -1,5 +1,6 @@
 from tkinter import *
 import os
+from tkinter import ttk
 from PIL import ImageTk,Image
 from tkinter import messagebox
 
@@ -129,6 +130,11 @@ def sopas():
     janela_sopas = Toplevel(janela)
     janela_sopas.geometry("600x500")
     janela_sopas.title("Todas as receitas de Sopas")
+    painel2 = PanedWindow(janela_sopas, width = 200, height = 200, bd = "3", relief = "sunken")
+    painel2.place(x=300, y=20)
+    #self.tree = ttk.Treeview(painel2, collums = ("Número", "Data", "Hora", "Movimento"), show = "headings")
+    #self.tree.collum("Número", width = 100, anchor = 'c')
+    #self.tree.place(x=5, y=5)
     janela_sopas.mainloop()
 
 # Implementar menu
