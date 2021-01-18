@@ -3,28 +3,98 @@ import os
 from tkinter import ttk
 from PIL import ImageTk,Image
 from tkinter import messagebox
+def pag_inicial():
+    #original_frame.withdraw()
+    janela = Tk()
+    janela.title('Recipe Manager')
+    janela.geometry("1366x768")
+    janela.configure(bg='#aff7ff')
+    janela.resizable(0,0)
+    imgLogo=PhotoImage(file="imagens\\logo.png", width=200, height=200)
+    l_logo=Label(janela, image=imgLogo)
+    l_logo.place(x=10, y=10)
+    
+    # Implementar menu
+    barra_Menu = Menu(janela)
 
-janela = Tk()
-janela.title('Recipe Manager')
-# Largura * Altura
-janela.geometry("1024x600")
-janela.configure(bg='#aff7ff')
-janela.resizable(0,0)
-imgLogo=PhotoImage(file="imagens\\logo.png", width=200, height=200)
-l_logo=Label(janela, image=imgLogo)
-l_logo.place(x=10, y=10)
-# Funções para a execução do programa
+    # Constroi o menu
+    simuladores_Menu = Menu(barra_Menu)
+    barra_Menu.add_command(label = "Home", command = "noaction")
+    barra_Menu.add_command(label = "Todas as Receitas", command = "noaction")
+    barra_Menu.add_command(label = "Favoritos", command = "noaction")
+    barra_Menu.add_command(label = "Contacte-nos", command = "noaction")
+    barra_Menu.add_command(label = "About Us", command = "noaction")
+
+    # Botões
+    btnadd=Button(janela, text='Adicione uma nova Receita!', fg='white', width=35, height=3, relief='ridge', command = add_receita, bg="#499dc0")
+    btnadd.pack(side=TOP)
+
+
+
+    btn2=Button(janela, text='Sopas', fg='black', width=7, height=3, relief='ridge', command = sopas)
+    btn2.place(x=280, y=80)
+    btn3=Button(janela, text='Breakfast', fg='black', width=7, height=3, relief='ridge', command = "noaction")
+    btn3.place(x=380, y=80)
+    btn4=Button(janela, text='Frango', fg='black', width=7, height=3, relief='ridge', command = "noaction")
+    btn4.place(x=480, y=80)
+    btn5=Button(janela, text='Peixe', fg='black', width=7, height=3, relief='ridge', command = "noaction")
+    btn5.place(x=580, y=80)
+    btn6=Button(janela, text='Carne Vermelha', fg='black', width=7, height=3, relief='ridge', command = "noaction")
+    btn6.place(x=680, y=80)
+
+    btn10=Button(janela, text='Acompanhamentos', fg='black', width=7, height=3, relief='ridge', command = "noaction")
+    btn10.place(x=280, y=160)
+    btn11=Button(janela, text='Massa', fg='black', width=7, height=3, relief='ridge', command = "noaction")
+    btn11.place(x=380, y=160)
+    btn12=Button(janela, text='Cassarolas', fg='black', width=7, height=3, relief='ridge', command = "noaction")
+    btn12.place(x=480, y=160)
+    btn13=Button(janela, text='Vegetais', fg='black', width=7, height=3, relief='ridge', command = "noaction")
+    btn13.place(x=580, y=160)
+    btn14=Button(janela, text='Snacks', fg='black', width=7, height=3, relief='ridge', command = "noaction")
+    btn14.place(x=680, y=160)
+
+    btn18=Button(janela, text='Geleias', fg='black', width=7, height=3, relief='ridge', command = "noaction")
+    btn18.place(x=280, y=240)
+    btn19=Button(janela, text='Bebidas', fg='black', width=7, height=3, relief='ridge', command = "noaction")
+    btn19.place(x=380, y=240)
+    btn20=Button(janela, text='Marisco', fg='black', width=7, height=3, relief='ridge', command = "noaction")
+    btn20.place(x=480, y=240)
+    btn21=Button(janela, text='Bolos', fg='black', width=7, height=3, relief='ridge', command = "noaction")
+    btn21.place(x=580, y=240)
+    btn22=Button(janela, text='Biscoitos', fg='black', width=7, height=3, relief='ridge', command = "noaction")
+    btn22.place(x=680, y=240)
+
+    btn23=Button(janela, text='Vegetais', fg='black', width=7, height=3, relief='ridge', command = "noaction")
+    btn23.place(x=280, y=320)
+    btn24=Button(janela, text='Molhos', fg='black', width=7, height=3, relief='ridge', command = "noaction")
+    btn24.place(x=380, y=320)
+    btn25=Button(janela, text='Aperitivos', fg='black', width=7, height=3, relief='ridge', command = "noaction")
+    btn25.place(x=480, y=320)
+    btn26=Button(janela, text='Outros', fg='black', width=7, height=3, relief='ridge', command = "noaction")
+    btn26.place(x=580, y=320)
+    btn27=Button(janela, text='+', fg='black', width=7, height=3, relief='ridge', command = "noaction")
+    btn27.place(x=680, y=320)
+
+    # Constroi menu Sair, com comando quit 
+    barra_Menu.add_command(label = "Sair", command = janela.quit)
+
+    janela.configure(menu=barra_Menu)
+    janela.mainloop()
+
 def login():
-    janelalogin = Toplevel()
-    janelalogin.geometry("300x300")
+    janelalogin = Tk()
+    janelalogin.geometry("1024x600")
+    janelalogin.configure(bg='#aff7ff')
     janelalogin.title("Login")
+    original_frame.withdraw()
+    
 
     #label username
     lbl_username=Label(janelalogin, text="Username :")
     lbl_username.place(x=20, y=50)
 
     #label password
-    
+        
     lbl_pw=Label(janelalogin, text="Password :", textvariable="pw")
     lbl_pw.place(x=20, y=100)
 
@@ -37,22 +107,21 @@ def login():
     txt_pw1.place(x=100, y=100)
 
     #login button
-    btn=Button(janelalogin, text="Log in")
+    btn=Button(janelalogin, text="Log in", command = pag_inicial)
     btn.place(x=100, y=150)
 
     #menu do login
     login_menu = Menu(janelalogin)
     login_menu.add_command(label="Criar conta nova", command=registo)
     janelalogin.configure(menu=login_menu)
-
-
     janelalogin.mainloop()
 
 def registo():
-    janelaregisto = Toplevel(janela)
-    janelaregisto.geometry("500x400")
+    janelaregisto = Toplevel(janela_principal)
+    janelaregisto.geometry("1024x600")
     janelaregisto.title("Registo")
     janelaregisto.configure(bg='#aff7ff')
+    original_frame.withdraw()
 
     # Botão foto de perfil
     lbl_email=Label(janelaregisto, text="Clique aqui para adicionar a sua foto de perfil")
@@ -105,7 +174,7 @@ def registo():
     janelaregisto.mainloop()
 
 def add_receita():
-    janela_add = Toplevel(janela)
+    janela_add = Toplevel(janela_principal)
     janela_add.geometry("300x500")
     janela_add.title("Nova Receita")
     # Caixa de texto
@@ -126,83 +195,29 @@ def add_receita():
     janela_add.mainloop()
 
 def sopas():
-    janela_sopas = Toplevel(janela)
+    janela_sopas = Toplevel(janela_principal)
     janela_sopas.geometry("600x500")
     janela_sopas.title("Todas as receitas de Sopas")
     painel2 = PanedWindow(janela_sopas, width = 200, height = 200, bd = "3", relief = "sunken")
     painel2.place(x=300, y=20)
-    #self.tree = ttk.Treeview(painel2, collums = ("Número", "Data", "Hora", "Movimento"), show = "headings")
-    #self.tree.collum("Número", width = 100, anchor = 'c')
-    #self.tree.place(x=5, y=5)
+    tree = ttk.Treeview(painel2, columns = ("Número", "Data", "Hora", "Movimento"), show = "headings")
+    tree.column("Número", width = 100, anchor = 'c')
+    tree.place(x=5, y=5)
     janela_sopas.mainloop()
 
-# Implementar menu
-barra_Menu = Menu(janela)
+# ---- PÁGINA INICIAL ----
 
-# Constroi o menu
-simuladores_Menu = Menu(barra_Menu)
-barra_Menu.add_command(label = "Home", command = "noaction")
-barra_Menu.add_command(label = "Todas as Receitas", command = "noaction")
-barra_Menu.add_command(label = "Favoritos", command = "noaction")
-barra_Menu.add_command(label = "Contacte-nos", command = "noaction")
-barra_Menu.add_command(label = "About Us", command = "noaction")
-
-# Botões
-btnadd=Button(janela, text='Adicione uma nova Receita!', fg='white', width=35, height=3, relief='ridge', command = add_receita, bg="#499dc0")
-btnadd.pack(side=TOP)
-btnlogin=Button(janela, text='Faça LOGIN!', fg='white', width=30, height=2, relief='ridge', command = login, bg="#499dc0")
+janela_principal = Tk()
+janela_principal.title('Recipe Manager')
+janela_principal.geometry("1024x600")
+janela_principal.configure(bg='#aff7ff')
+original_frame = janela_principal
+imgLogo=PhotoImage(file="imagens\\logo.png", width=200, height=200)
+l_logo=Label(janela_principal, image=imgLogo)
+l_logo.place(x=10, y=10)
+btnlogin=Button(janela_principal, text='Faça LOGIN!', fg='white', width=30, height=2, relief='ridge', command = login, bg="#499dc0")
 btnlogin.place(x=220, y=450)
-btnregisto=Button(janela, text='Ainda não criou uma conta? Registe-se', fg='white', width=30, height=2, relief='ridge', command = registo, bg="#499dc0")
+btnregisto=Button(janela_principal, text='Ainda não criou uma conta? Registe-se', fg='white', width=30, height=2, relief='ridge', command = registo, bg="#499dc0")
 btnregisto.place(x=580, y=450)
+janela_principal.mainloop()
 
-
-
-btn2=Button(janela, text='Sopas', fg='black', width=7, height=3, relief='ridge', command = sopas)
-btn2.place(x=280, y=80)
-btn3=Button(janela, text='Breakfast', fg='black', width=7, height=3, relief='ridge', command = "noaction")
-btn3.place(x=380, y=80)
-btn4=Button(janela, text='Frango', fg='black', width=7, height=3, relief='ridge', command = "noaction")
-btn4.place(x=480, y=80)
-btn5=Button(janela, text='Peixe', fg='black', width=7, height=3, relief='ridge', command = "noaction")
-btn5.place(x=580, y=80)
-btn6=Button(janela, text='Carne Vermelha', fg='black', width=7, height=3, relief='ridge', command = "noaction")
-btn6.place(x=680, y=80)
-
-btn10=Button(janela, text='Acompanhamentos', fg='black', width=7, height=3, relief='ridge', command = "noaction")
-btn10.place(x=280, y=160)
-btn11=Button(janela, text='Massa', fg='black', width=7, height=3, relief='ridge', command = "noaction")
-btn11.place(x=380, y=160)
-btn12=Button(janela, text='Cassarolas', fg='black', width=7, height=3, relief='ridge', command = "noaction")
-btn12.place(x=480, y=160)
-btn13=Button(janela, text='Vegetais', fg='black', width=7, height=3, relief='ridge', command = "noaction")
-btn13.place(x=580, y=160)
-btn14=Button(janela, text='Snacks', fg='black', width=7, height=3, relief='ridge', command = "noaction")
-btn14.place(x=680, y=160)
-
-btn18=Button(janela, text='Geleias', fg='black', width=7, height=3, relief='ridge', command = "noaction")
-btn18.place(x=280, y=240)
-btn19=Button(janela, text='Bebidas', fg='black', width=7, height=3, relief='ridge', command = "noaction")
-btn19.place(x=380, y=240)
-btn20=Button(janela, text='Marisco', fg='black', width=7, height=3, relief='ridge', command = "noaction")
-btn20.place(x=480, y=240)
-btn21=Button(janela, text='Bolos', fg='black', width=7, height=3, relief='ridge', command = "noaction")
-btn21.place(x=580, y=240)
-btn22=Button(janela, text='Biscoitos', fg='black', width=7, height=3, relief='ridge', command = "noaction")
-btn22.place(x=680, y=240)
-
-btn23=Button(janela, text='Vegetais', fg='black', width=7, height=3, relief='ridge', command = "noaction")
-btn23.place(x=280, y=320)
-btn24=Button(janela, text='Molhos', fg='black', width=7, height=3, relief='ridge', command = "noaction")
-btn24.place(x=380, y=320)
-btn25=Button(janela, text='Aperitivos', fg='black', width=7, height=3, relief='ridge', command = "noaction")
-btn25.place(x=480, y=320)
-btn26=Button(janela, text='Outros', fg='black', width=7, height=3, relief='ridge', command = "noaction")
-btn26.place(x=580, y=320)
-btn27=Button(janela, text='+', fg='black', width=7, height=3, relief='ridge', command = "noaction")
-btn27.place(x=680, y=320)
-
-# Constroi menu Sair, com comando quit 
-barra_Menu.add_command(label = "Sair", command = janela.quit)
-
-janela.configure(menu=barra_Menu)
-janela.mainloop()
