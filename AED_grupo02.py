@@ -5,6 +5,28 @@ from PIL import ImageTk,Image
 from tkinter import messagebox
 
 def login():
+    def loginBe():
+        with open('ficheiros\\utilizadores.txt', 'r', encoding="utf-8") as arquivoUtilizador:
+            utilizadores = arquivoUtilizador.readlines()
+        with open('ficheiros\\senhas.txt', 'r', encoding="utf-8") as arquivoUtilizador:
+            senhas = arquivoUtilizador.readlines()
+        
+        utilizadores = map(lambda x: x.replace('\n',''), utilizadores)
+        senhas = map(lambda x: x.replace('\n',''), senhas)
+
+        utilizador = txt_username.get()
+        senha = txt_pw1.get()
+
+        logado = False
+
+        for i in range(len(utilizadores)):
+            if utilizador == utilizadores[i] and senha == senhas[i]:
+                print('Utilizador logado.')
+                logado = True
+        if not logado:
+            print('Usuario ou senha incorreta.')
+            janelalogin.destroy()
+
     janelalogin = Tk()
     janelalogin.geometry("1024x600")
     janelalogin.configure(bg='#aff7ff')
@@ -22,15 +44,17 @@ def login():
     lbl_pw.place(x=20, y=100)
 
     #entry username
-    txt_username=Entry(janelalogin, width=25)
+    userlog = StringVar()
+    txt_username=Entry(janelalogin, width=25, textvariable = userlog)
     txt_username.place(x=100, y=50)
 
     #entry password
-    txt_pw1=Entry(janelalogin, width=25, show="*")
+    pwlog = StringVar()
+    txt_pw1=Entry(janelalogin, width=25, show="*", textvariable = pwlog)
     txt_pw1.place(x=100, y=100)
 
     #login button
-    btn=Button(janelalogin, text="Log in", command = pag_inicial)
+    btn=Button(janelalogin, text="Log in", command = loginBe)
     btn.place(x=100, y=150)
 
     #menu do login
@@ -40,7 +64,15 @@ def login():
     janelalogin.mainloop()
 
 def registo():
-
+    def registar():
+        try:
+            with open('ficheiros\\utilizadores.txt', 'a', encoding="utf-8") as arquivoUtilizador_1:
+                arquivoUtilizador_1.write(txt_username.get() + '\n')
+            with open('ficheiros\\senhas.txt', 'a', encoding="utf-8") as arquivoUtilizador:
+                arquivoUtilizador.write(txt_pw.get() + '\n')
+            janelaregisto.destroy()
+        except:
+            print('Houve um erro')
     janelaregisto = Toplevel(janela_principal)
     janelaregisto.geometry("1024x600")
     janelaregisto.title("Registo")
@@ -56,11 +88,12 @@ def registo():
     lbl_email.place(x=20, y=50)
 
     #label username
+    
     lbl_username=Label(janelaregisto, text="Username :")
     lbl_username.place(x=20, y=100)
 
     #label password
-    pw = StringVar()
+    
     lbl_pw=Label(janelaregisto, text="Password :")
     lbl_pw.place(x=20, y=150)
 
@@ -69,34 +102,31 @@ def registo():
     lbl_rpw=Label(janelaregisto, text="Confirmar pw :")
     lbl_rpw.place(x=20, y=200)
 
-
-    #entry email
+    # Entry email
     txt_email=Entry(janelaregisto, width=25)
     txt_email.place(x=100, y=50)
 
-    #entry username
+    # Entry username
     txt_username=Entry(janelaregisto, width=25)
     txt_username.place(x=100, y=100)
 
-    #entry password
-    pw = StringVar()
-    txt_pw=Entry(janelaregisto, width=25, show="*", textvariable = pw)
+    # Entry password
+    txt_pw=Entry(janelaregisto, width=25, show="*")
     txt_pw.place(x=100, y=150)
 
     #entry repeat password
     cpw = StringVar()
     txt_rpw=Entry(janelaregisto, width=25, show="*", textvariable = cpw)
     txt_rpw.place(x=100, y=200)
-    def mensagem():
-        if cpw.get() != pw.get():
-            messagebox.showerror("Error", "As passwords não coincidem!")
-
     #registo button
-    btn=Button(janelaregisto, text="Registe-se", command = mensagem)
-    btn.place(x=100, y=350)
+    btnw=Button(janelaregisto, text="Registe-se", command = registar)
+    btnw.place(x=100, y=350)
+    """def mensagem():
+        if cpw.get() != pw.get():
+            messagebox.showerror("Error", "As passwords não coincidem!")"""
+    
 
     janelaregisto.mainloop()
-
 def pag_inicial():
     janela = Tk()
     janela.title('Recipe Manager')
