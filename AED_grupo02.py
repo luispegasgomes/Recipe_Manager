@@ -11,8 +11,8 @@ def login():
         with open('ficheiros\\senhas.txt', 'r', encoding="utf-8") as arquivoUtilizador:
             senhas = arquivoUtilizador.readlines()
         
-        utilizadores = map(lambda x: x.replace('\n',''), utilizadores)
-        senhas = map(lambda x: x.replace('\n',''), senhas)
+        utilizadores = list(map(lambda x: x.replace('\n',''), utilizadores))
+        senhas = list(map(lambda x: x.replace('\n',''), senhas))
 
         utilizador = txt_username.get()
         senha = txt_pw1.get()
@@ -24,7 +24,7 @@ def login():
                 print('Utilizador logado.')
                 logado = True
         if not logado:
-            print('Usuario ou senha incorreta.')
+            messagebox.showwarning("Error", "Utilizador ou password incorretos.")
             janelalogin.destroy()
 
     janelalogin = Tk()
