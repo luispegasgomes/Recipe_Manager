@@ -5,13 +5,12 @@ from PIL import ImageTk,Image
 from tkinter import messagebox
 
 janela = Tk()
-pastaApp=os.path.dirname(__file__)
 janela.title('Recipe Manager')
 # Largura * Altura
 janela.geometry("1024x600")
 janela.configure(bg='#aff7ff')
 janela.resizable(0,0)
-imgLogo=PhotoImage(file=pastaApp+"\\Logo.png", width=200, height=200)
+imgLogo=PhotoImage(file="imagens\\logo.png", width=200, height=200)
 l_logo=Label(janela, image=imgLogo)
 l_logo.place(x=10, y=10)
 # Funções para a execução do programa
