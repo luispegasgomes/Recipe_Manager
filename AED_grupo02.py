@@ -3,6 +3,7 @@ import os
 from tkinter import ttk
 from PIL import ImageTk,Image
 from tkinter import messagebox
+from tkinter import filedialog 
 
 def login():
     def loginBe():
@@ -68,67 +69,73 @@ def login():
 
 def registo():
     def registar():
-        try:
-            with open('ficheiros\\utilizadores.txt', 'a', encoding="utf-8") as arquivoUtilizador_1:
-                arquivoUtilizador_1.write(txt_username.get() + '\n')
-            with open('ficheiros\\senhas.txt', 'a', encoding="utf-8") as arquivoUtilizador:
-                arquivoUtilizador.write(txt_pw.get() + '\n')
-            janelaregisto.destroy()
-            login()
-        except:
-            print('Houve um erro')
+        if txt_rpw.get() == txt_pw.get():
+            try:
+                with open('ficheiros\\utilizadores.txt', 'a', encoding="utf-8") as arquivoUtilizador_1:
+                    arquivoUtilizador_1.write(txt_username.get() + '\n')
+                with open('ficheiros\\senhas.txt', 'a', encoding="utf-8") as arquivoUtilizador:
+                    arquivoUtilizador.write(txt_pw.get() + '\n')
+                janelaregisto.destroy()
+                login()
+            except:
+                print('Erro')
+        else:
+            messagebox.showerror("Error", "As passwords não coincidem!")    
+    def escolhe_imagem():
+    # file dialog, para selecionar ficheiro em disco
+        filename = filedialog.askopenfilename(initialdir = "/", title = "Select file",filetypes = (("gif files","*.gif"),("jpeg files","*.jpg"),("png files", "*.png"), ("all files","*.*")))
+        global img 
+        img = ImageTk.PhotoImage(file = filename)
     janelaregisto = Toplevel(janela_principal)
-    janelaregisto.geometry("1024x600")
+    janelaregisto.geometry("900x600")
     janelaregisto.title("Registo")
     janelaregisto.configure(bg='#aff7ff')
     original_frame.withdraw()
-
+    lbl_username=Label(janelaregisto, text="Cria a tua conta !", font=("Helvetica",20))
+    lbl_username.place(x=320, y=10)
     # Botão foto de perfil
-    lbl_email=Label(janelaregisto, text="Clique aqui para adicionar a sua foto de perfil")
-    lbl_email.place(x=20, y=250)
+    btn_foto=Button(janelaregisto, text="Adiciona a tua foto de perfil!", width=25, height=5, command = escolhe_imagem)
+    btn_foto.place(x=600, y=180)
 
-    #label email
+    # Label email
     lbl_email=Label(janelaregisto, text="Email :")
-    lbl_email.place(x=20, y=50)
-
-    #label username
-    
-    lbl_username=Label(janelaregisto, text="Username :")
-    lbl_username.place(x=20, y=100)
-
-    #label password
-    
-    lbl_pw=Label(janelaregisto, text="Password :")
-    lbl_pw.place(x=20, y=150)
-
-    #label repeat password
-    
-    lbl_rpw=Label(janelaregisto, text="Confirmar pw :")
-    lbl_rpw.place(x=20, y=200)
+    lbl_email.place(x=350, y=70)
 
     # Entry email
     txt_email=Entry(janelaregisto, width=25)
-    txt_email.place(x=100, y=50)
+    txt_email.place(x=350, y=100)
+
+
+    # Label username
+        
+    lbl_username=Label(janelaregisto, text="Username :")
+    lbl_username.place(x=350, y=130)
 
     # Entry username
     txt_username=Entry(janelaregisto, width=25)
-    txt_username.place(x=100, y=100)
+    txt_username.place(x=350, y=160)
+
+    # Label password
+    lbl_pw=Label(janelaregisto, text="Password :")
+    lbl_pw.place(x=350, y=190)
 
     # Entry password
     txt_pw=Entry(janelaregisto, width=25, show="*")
-    txt_pw.place(x=100, y=150)
+    txt_pw.place(x=350, y=220)
 
-    #entry repeat password
-    cpw = StringVar()
-    txt_rpw=Entry(janelaregisto, width=25, show="*", textvariable = cpw)
-    txt_rpw.place(x=100, y=200)
-    #registo button
-    btnw=Button(janelaregisto, text="Registe-se", command = registar)
-    btnw.place(x=100, y=350)
-    """def mensagem():
-        if cpw.get() != pw.get():
-            messagebox.showerror("Error", "As passwords não coincidem!")"""
-    
+    # Label repeat password
+    lbl_rpw=Label(janelaregisto, text="Confirmar password :")
+    lbl_rpw.place(x=350, y=250)
+
+    # Entry repeat password
+    txt_rpw=Entry(janelaregisto, width=25, show="*")
+    txt_rpw.place(x=350, y=280)
+
+    # Registo button
+    btnw=Button(janelaregisto, text="Regista-te", fg='white', width=30, height=2, relief='ridge', command = registar, bg="#499dc0")
+    btnw.place(x=325, y=350)
+
+
 
     janelaregisto.mainloop()
 
@@ -141,6 +148,8 @@ def pag_admin():
     """imgLogo3=PhotoImage(file="imagens\\logo.png", width=200, height=200)
     l_logo3=Label(janela, image=imgLogo3)
     l_logo3.place(x=10, y=10)"""
+    lbl_utilizador=Label(janela, text="Bem vindo(a), utilizador")
+    lbl_utilizador.place(x=880, y=10)
     # Implementar menu
     barra_Menu = Menu(janela)
 
@@ -153,7 +162,7 @@ def pag_admin():
     barra_Menu.add_command(label = "About Us", command = "noaction")
 
     # Botões
-    btnadd=Button(janela, text='Adicione uma nova Receita!', fg='white', width=35, height=3, relief='ridge', command = pag_user, bg="#499dc0")
+    btnadd=Button(janela, text='Gerir as minhas receitas', fg='white', width=35, height=3, relief='ridge', command = pag_user, bg="#499dc0")
     btnadd.pack(side=TOP)
 
 
@@ -233,8 +242,8 @@ original_frame = janela_principal
 # Cria o Logo
 imgLogo=PhotoImage(file="imagens\\logo.png", width=200, height=200)
 l_logo=Label(janela_principal, image=imgLogo)
-l_logo.place(x=10, y=10)
-btnlogin=Button(janela_principal, text='Faça LOGIN!', fg='white', width=30, height=2, relief='ridge', command = login, bg="#499dc0")
+l_logo.place(x=400, y=70)
+btnlogin=Button(janela_principal, text='Iniciar sessão !', fg='white', width=30, height=2, relief='ridge', command = login, bg="#499dc0")
 btnlogin.place(x=220, y=450)
 btnregisto=Button(janela_principal, text='Ainda não criou uma conta? Registe-se', fg='white', width=30, height=2, relief='ridge', command = registo, bg="#499dc0")
 btnregisto.place(x=580, y=450)
