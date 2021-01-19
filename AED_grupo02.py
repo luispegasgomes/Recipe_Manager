@@ -22,45 +22,47 @@ def login():
         for i in range(len(utilizadores)):
             if utilizador == utilizadores[i] and senha == senhas[i]:
                 print('Utilizador logado.')
+                pag_inicial()
+                janelalogin.destroy()
                 logado = True
         if not logado:
             messagebox.showwarning("Error", "Utilizador ou password incorretos.")
             janelalogin.destroy()
 
     janelalogin = Tk()
-    janelalogin.geometry("1024x600")
+    janelalogin.geometry("900x600")
     janelalogin.configure(bg='#aff7ff')
-    janelalogin.title("Login")
+    janelalogin.title("Iniciar Sessão")
+    """imgLogo2=PhotoImage(file="imagens\\logo.png", width=200, height=200)
+    l_logo2=Label(janelalogin, image=imgLogo2)
+    l_logo2.place(x=10, y=10)"""
     original_frame.withdraw()
-    
-
-    #label username
-    lbl_username=Label(janelalogin, text="Username :")
-    lbl_username.place(x=20, y=50)
-
-    #label password
         
-    lbl_pw=Label(janelalogin, text="Password :", textvariable="pw")
-    lbl_pw.place(x=20, y=100)
+    # Label Faça o seu login
+    lbl_username=Label(janelalogin, text="Iniciar sessão", font=("Helvetica",20))
+    lbl_username.place(x=390, y=10)
 
-    #entry username
-    userlog = StringVar()
-    txt_username=Entry(janelalogin, width=25, textvariable = userlog)
-    txt_username.place(x=100, y=50)
+    # Label username
+    lbl_username=Label(janelalogin, text="Username :")
+    lbl_username.place(x=400, y=70)
 
-    #entry password
-    pwlog = StringVar()
-    txt_pw1=Entry(janelalogin, width=25, show="*", textvariable = pwlog)
-    txt_pw1.place(x=100, y=100)
+    # Entry username
+    txt_username=Entry(janelalogin, width=25)
+    txt_username.place(x=400, y=100)
 
-    #login button
-    btn=Button(janelalogin, text="Log in", command = loginBe)
-    btn.place(x=100, y=150)
+    # Label password
+            
+    lbl_pw=Label(janelalogin, text="Password :")
+    lbl_pw.place(x=400, y=140)
 
-    #menu do login
-    login_menu = Menu(janelalogin)
-    login_menu.add_command(label="Criar conta nova", command=registo)
-    janelalogin.configure(menu=login_menu)
+    # Entry password
+    txt_pw1=Entry(janelalogin, width=25, show="*")
+    txt_pw1.place(x=400, y=170)
+
+    # Login button
+    btn=Button(janelalogin, text="Iniciar Sessão", command = loginBe, width=40)
+    btn.place(x=335, y=300)
+
     janelalogin.mainloop()
 
 def registo():
@@ -71,6 +73,7 @@ def registo():
             with open('ficheiros\\senhas.txt', 'a', encoding="utf-8") as arquivoUtilizador:
                 arquivoUtilizador.write(txt_pw.get() + '\n')
             janelaregisto.destroy()
+            login()
         except:
             print('Houve um erro')
     janelaregisto = Toplevel(janela_principal)
@@ -127,15 +130,16 @@ def registo():
     
 
     janelaregisto.mainloop()
+
 def pag_inicial():
     janela = Tk()
     janela.title('Recipe Manager')
     janela.geometry("1024x600")
     janela.configure(bg='#aff7ff')
     janela.resizable(0,0)
-    imgLogo=PhotoImage(file="imagens\\logo.png", width=200, height=200)
-    l_logo=Label(janela, image=imgLogo)
-    l_logo.place(x=10, y=10)
+    """imgLogo3=PhotoImage(file="imagens\\logo.png", width=200, height=200)
+    l_logo3=Label(janela, image=imgLogo3)
+    l_logo3.place(x=10, y=10)"""
     # Implementar menu
     barra_Menu = Menu(janela)
 
@@ -242,6 +246,7 @@ janela_principal.title('Recipe Manager')
 janela_principal.geometry("1024x600")
 janela_principal.configure(bg='#aff7ff')
 original_frame = janela_principal
+# Cria o Logo
 imgLogo=PhotoImage(file="imagens\\logo.png", width=200, height=200)
 l_logo=Label(janela_principal, image=imgLogo)
 l_logo.place(x=10, y=10)
