@@ -4,38 +4,58 @@ from tkinter import ttk
 from PIL import ImageTk,Image
 from tkinter import messagebox
 
-janelalogin = Tk()
-janelalogin.geometry("900x600")
-janelalogin.configure(bg='#aff7ff')
-janelalogin.title("Iniciar Sessão")
-imgLogo=PhotoImage(file="imagens\\logo.png", width=200, height=200)
-l_logo=Label(janelalogin, image=imgLogo)
-l_logo.place(x=10, y=10)
+janelaregisto = Tk()
+janelaregisto.geometry("1024x600")
+janelaregisto.title("Registo")
+janelaregisto.configure(bg='#aff7ff')
 #original_frame.withdraw()
-    
-# Label Faça o seu login
-lbl_username=Label(janelalogin, text="Iniciar sessão", font=("Helvetica",20))
-lbl_username.place(x=390, y=10)
 
-# Label username
-lbl_username=Label(janelalogin, text="Username :")
-lbl_username.place(x=400, y=70)
+# Botão foto de perfil
+btn_foto=Button(janelaregisto, text="Clica aqui para adicionares a tua foto de perfil!")
+btn_foto.place(x=400, y=250)
+
+#label email
+lbl_email=Label(janelaregisto, text="Email :")
+lbl_email.place(x=400, y=50)
+
+#label username
+    
+lbl_username=Label(janelaregisto, text="Username :")
+lbl_username.place(x=400, y=80)
+
+#label password
+    
+lbl_pw=Label(janelaregisto, text="Password :")
+lbl_pw.place(x=400, y=150)
+
+#label repeat password
+    
+lbl_rpw=Label(janelaregisto, text="Confirmar password")
+lbl_rpw.place(x=400, y=200)
+
+# Entry email
+txt_email=Entry(janelaregisto, width=25)
+txt_email.place(x=100, y=50)
 
 # Entry username
-txt_username=Entry(janelalogin, width=25)
-txt_username.place(x=400, y=100)
-
-# Label password
-        
-lbl_pw=Label(janelalogin, text="Password :")
-lbl_pw.place(x=400, y=140)
+txt_username=Entry(janelaregisto, width=25)
+txt_username.place(x=100, y=100)
 
 # Entry password
-txt_pw1=Entry(janelalogin, width=25, show="*")
-txt_pw1.place(x=400, y=170)
+txt_pw=Entry(janelaregisto, width=25, show="*")
+txt_pw.place(x=100, y=150)
 
-# Login button
-btn=Button(janelalogin, text="Iniciar Sessão", command = "loginBe", width=40)
-btn.place(x=335, y=300)
+# Entry repeat password
+cpw = StringVar()
+txt_rpw=Entry(janelaregisto, width=25, show="*", textvariable = cpw)
+txt_rpw.place(x=100, y=200)
 
-janelalogin.mainloop()
+# Registo button
+btnw=Button(janelaregisto, text="Regista-te", command = "registar", width=20)
+btnw.place(x=400, y=350)
+"""def mensagem():
+    if cpw.get() != pw.get():
+        messagebox.showerror("Error", "As passwords não coincidem!")"""
+    
+
+janelaregisto.mainloop()

@@ -131,6 +131,7 @@ def registo():
     
 
     janelaregisto.mainloop()
+
 def pag_admin():
     janela = Tk()
     janela.title('Recipe Manager')
@@ -163,7 +164,7 @@ def pag_admin():
     btn3.place(x=380, y=80)
     btn5=Button(janela, text='Peixe', fg='black', width=7, height=3, relief='ridge', command = "noaction")
     btn5.place(x=580, y=80)
-    
+
     btn6=Button(janela, text='Carne', fg='black', width=7, height=3, relief='ridge', command = "noaction")
     btn6.place(x=680, y=80)
 
