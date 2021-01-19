@@ -29,6 +29,7 @@ def login():
         if not logado:
             messagebox.showwarning("Error", "Utilizador ou password incorretos.")
             janelalogin.destroy()
+            login()
 
     janelalogin = Tk()
     janelalogin.geometry("900x600")
@@ -162,7 +163,7 @@ def pag_admin():
     barra_Menu.add_command(label="About Us", command="noaction")
 
     # Botões
-    btnadd = Button(janela, text='Gerir as minhas receitas', fg='white',width=35, height=3, relief='ridge', command="pag_user", bg="#499dc0")
+    btnadd = Button(janela, text='Gerir as minhas receitas', fg='white',width=35, height=3, relief='ridge', command=pag_user, bg="#499dc0")
     btnadd.pack(side=TOP)
 
     btn2 = Button(janela, text='Sopas', fg='black', width=7,height=3, relief='ridge', command="sopas")
