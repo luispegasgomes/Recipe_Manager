@@ -3,7 +3,8 @@ import os
 from tkinter import ttk
 from PIL import ImageTk,Image
 from tkinter import messagebox
-from tkinter import filedialog 
+from tkinter import filedialog
+from tkinter.ttk import Combobox 
 
 def login():
     def loginBe():
@@ -198,24 +199,62 @@ def pag_admin():
     janela.mainloop()
 
 def pag_user():
-    janela_add = Toplevel(janela_principal)
-    janela_add.geometry("1024x600")
+    janela_add = Toplevel(janela_principal) 
+    janela_add.geometry("1366x800")
     janela_add.title("Recipe Manager")
+    # Painel Adicionar receita
+    panel1 = LabelFrame(janela_add, text = 'Adicionar receita', width = 350, height = 500, bd = "3", relief = "sunken")
+    panel1.place(x=10, y=10)
+    # Painel Consultar
+    panel2 = LabelFrame(janela_add, text = 'Consultar', width = 500, height = 500, bd = "3", relief = "sunken")
+    panel2.place(x=800, y=10)
+    # Painel Edições
+    panel3 = LabelFrame(janela_add, text = 'Todas as minhas receitas', width = 300, height = 300, bd = "3", relief = "sunken")
+    panel3.place(x=425, y=10)
     # Caixa de texto
-    texto_intro = StringVar()
-    texto_intro.set('Clique aqui para inserir um texto')
-    caixa_txt=Text(janela_add, width=30, height=15)
-    caixa_txt.place(x=27, y=25)
+    caixa_txt=Text(panel1, width=30, height=15)
+    caixa_txt.place(x=20, y=15)
+    # Listbox
+    lbox_gerir = Listbox(panel3, width = 45, height = 16, bd = "3", relief = "sunken")
+    lbox_gerir.place(x=10, y=10)
+
     # Entry nome da receita
-    txt_nreceita=Entry(janela_add, width=40)
-    txt_nreceita.place(x=27, y=300)
-    # Entry categoria
-    txt_categoria=Entry(janela_add, width=40)
-    txt_categoria.place(x=27, y=340)
-    
-    # Botões
-    btn1=Button(janela_add, text='Guardar', fg='white', width=34, height=1, relief='ridge', command = "noaction", bg="#499dc0")
-    btn1.place(x=27, y=380)
+    txt_nreceita=Entry(panel1, width=40)
+    txt_nreceita.place(x=20, y=310)
+    lbl_name=Label(panel1, text="Nome da receita :", fg="black", font=("Helvetica", 11))
+    lbl_name.place(x=16, y=280)
+        
+    # ---Botões---
+    # Botão Adicionar
+    btn1=Button(panel1, text='Adicionar', fg='white', width=40, height=1, relief='ridge', command = "noaction", bg="#499dc0")
+    btn1.place(x=20, y=420)
+    # Botão Consultar
+    btn_consultar=Button(janela_add, text='Consultar', fg='white', width=20, height=3, relief='ridge', command = "noaction", bg="#499dc0")
+    btn_consultar.place(x=500, y=330)
+    # Botão Editar
+    btn_editar=Button(janela_add, text='Editar', fg='white', width=20, height=3, relief='ridge', command = "noaction", bg="#499dc0")
+    btn_editar.place(x=500, y=400)
+    # Botão Remover
+    btn_remove=Button(janela_add, text='Remover', fg='white', width=20, height=3, relief='ridge', command = "noaction", bg="#499dc0")
+    btn_remove.place(x=500, y=470)
+
+
+    # Componente treeview 
+    tree = ttk.Treeview(panel2, columns = ("Receita", "Descrição"), show = "headings")
+    tree.column("Receita", width = 100, anchor="c")
+    tree.column("Descrição", width = 350, anchor="c")
+    tree.heading("Receita", text="Receita")
+    tree.heading("Descrição", text="Descrição")
+    tree.place(x=15, y=10)
+
+    # Combobox para a categoria
+    lbl_categorias=Label(panel1, text="Selecione a categoria a que pretende adicionar :", fg="black", font=("Helvetica", 11))
+    lbl_categorias.place(x=16, y=340)
+    lista = ['Sopas', 'Carne', 'Peixe', 'Massas', 'Breakfast', 'Vegetais', 'Snacks', 'Sobremesas', 'Bebidas', 'Outros']
+    cb_categorias = Combobox(panel1, values = lista)
+    cb_categorias.place(x=20, y=370)
+
+
     janela_add.mainloop()
 
 def sopas():
