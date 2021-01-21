@@ -147,9 +147,9 @@ def pag_admin():
     janela.geometry("1024x600")
     janela.configure(bg='#aff7ff')
     janela.resizable(0, 0)
-    """imgLogo=PhotoImage(file="imagens\\logo.png", width=200, height=200)
-        l_logo=Label(janela, image=imgLogo)
-        l_logo.place(x=10, y=10)"""
+    """imgLogo=PhotoImage(file="imagens\\logo12.gif", width=200, height=200)
+    l_logo=Label(janela, image=imgLogo)
+    l_logo.place(x=10, y=70)"""
     lbl_utilizador = Label(janela, text="Bem vindo(a), utilizador")
     lbl_utilizador.place(x=880, y=10)
     # Implementar menu
@@ -165,7 +165,7 @@ def pag_admin():
 
     # Botões
     btnadd = Button(janela, text='Gerir as minhas receitas', fg='white',width=35, height=3, relief='ridge', command=pag_user, bg="#499dc0")
-    btnadd.pack(side=TOP)
+    btnadd.place(x=380, y=1)
 
     btn2 = Button(janela, text='Sopas', fg='black', width=7,height=3, relief='ridge', command="sopas")
     btn2.place(x=280, y=80)
