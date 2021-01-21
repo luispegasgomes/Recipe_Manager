@@ -199,6 +199,17 @@ def pag_admin():
     janela.mainloop()
 
 def pag_user():
+    def adicionar():
+        with open('ficheiros\\nome_receitas.txt', 'a', encoding="utf-8") as arquivonreceitas:
+            arquivonreceitas.write(txt_nreceita.get() + '\n')
+        with open('ficheiros\\categorias.txt', 'a', encoding="utf-8") as arquivoCategorias:
+            arquivoCategorias.write(cb_categorias.get() + '\n')
+        """with open('ficheiros\\descricao_receita.txt', 'a', encoding="utf-8") as arquivoTexto:
+            arquivoTexto.write(caixa_txt.get() + '\n')"""
+        janela_add.destroy()
+        pag_user()
+    def remover():
+        lbox_gerir.delete(lbox_gerir.curselection())
     janela_add = Toplevel(janela_principal) 
     janela_add.geometry("1366x800")
     janela_add.title("Recipe Manager")
@@ -226,7 +237,7 @@ def pag_user():
         
     # ---Botões---
     # Botão Adicionar
-    btn1=Button(panel1, text='Adicionar', fg='white', width=40, height=1, relief='ridge', command = "noaction", bg="#499dc0")
+    btn1=Button(panel1, text='Adicionar', fg='white', width=40, height=1, relief='ridge', command = adicionar, bg="#499dc0")
     btn1.place(x=20, y=420)
     # Botão Consultar
     btn_consultar=Button(janela_add, text='Consultar', fg='white', width=20, height=3, relief='ridge', command = "noaction", bg="#499dc0")
@@ -235,7 +246,7 @@ def pag_user():
     btn_editar=Button(janela_add, text='Editar', fg='white', width=20, height=3, relief='ridge', command = "noaction", bg="#499dc0")
     btn_editar.place(x=500, y=400)
     # Botão Remover
-    btn_remove=Button(janela_add, text='Remover', fg='white', width=20, height=3, relief='ridge', command = "noaction", bg="#499dc0")
+    btn_remove=Button(janela_add, text='Remover', fg='white', width=20, height=3, relief='ridge', command = remover, bg="#499dc0")
     btn_remove.place(x=500, y=470)
 
 
@@ -253,7 +264,13 @@ def pag_user():
     lista = ['Sopas', 'Carne', 'Peixe', 'Massas', 'Breakfast', 'Vegetais', 'Snacks', 'Sobremesas', 'Bebidas', 'Outros']
     cb_categorias = Combobox(panel1, values = lista)
     cb_categorias.place(x=20, y=370)
-
+    
+    ficheiro = open("ficheiros\\nome_receitas.txt", "r", encoding="utf-8")
+    lista_categorias = []
+    for i in ficheiro:
+        lista_categorias.append(i)
+    for j in lista_categorias:
+        lbox_gerir.insert(END, j)
 
     janela_add.mainloop()
 
