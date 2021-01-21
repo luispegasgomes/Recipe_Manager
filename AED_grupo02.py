@@ -204,8 +204,8 @@ def pag_user():
             arquivonreceitas.write(txt_nreceita.get() + '\n')
         with open('ficheiros\\categorias.txt', 'a', encoding="utf-8") as arquivoCategorias:
             arquivoCategorias.write(cb_categorias.get() + '\n')
-        """with open('ficheiros\\descricao_receita.txt', 'a', encoding="utf-8") as arquivoTexto:
-            arquivoTexto.write(caixa_txt.get() + '\n')"""
+        with open('ficheiros\\descricao_receita.txt', 'a', encoding="utf-8") as arquivoTexto:
+            arquivoTexto.write(caixa_txt.get("1.0", "end") + '\n')
         janela_add.destroy()
         pag_user()
     def remover():
