@@ -51,7 +51,8 @@ def login():
     lbl_username.place(x=400, y=70)
 
     # Entry username
-    txt_username=Entry(janelalogin, width=25)
+    nome = StringVar()
+    txt_username=Entry(janelalogin, width=25, textvariable = nome )
     txt_username.place(x=400, y=100)
 
     # Label password
@@ -147,11 +148,15 @@ def pag_admin():
     janela.geometry("1024x600")
     janela.configure(bg='#aff7ff')
     janela.resizable(0, 0)
-    """imgLogo=PhotoImage(file="imagens\\logo12.gif", width=200, height=200)
-    l_logo=Label(janela, image=imgLogo)
-    l_logo.place(x=10, y=70)"""
-    lbl_utilizador = Label(janela, text="Bem vindo(a), utilizador")
+    """imgLogo=ImageTk.PhotoImage(file="imagens\\logo.png")
+    janela.imgLogo = imgLogo
+    l_logo=Label(janela, image = imgLogo, width=20,height=20)
+    l_logo.place(x=800, y=70)"""
+    nome = StringVar()
+    nome.set(nome.get())
+    lbl_utilizador = Label(janela, text = nome)
     lbl_utilizador.place(x=880, y=10)
+
     # Implementar menu
     barra_Menu = Menu(janela)
 
@@ -163,13 +168,14 @@ def pag_admin():
     barra_Menu.add_command(label="Contacte-nos", command="noaction")
     barra_Menu.add_command(label="About Us", command="noaction")
 
+
     # Botões
     btnadd = Button(janela, text='Gerir as minhas receitas', fg='white',width=35, height=3, relief='ridge', command=pag_user, bg="#499dc0")
     btnadd.place(x=380, y=1)
 
-    btn2 = Button(janela, text='Sopas', fg='black', width=7,height=3, relief='ridge', command="sopas")
+    btn2 = Button(janela, text='Sopas', fg='black', width=7,height=3, relief='ridge', command=sopas)
     btn2.place(x=280, y=80)
-    btn3 = Button(janela, text='Carne', fg='black', width=7,height=3, relief='ridge', command="noaction")
+    btn3 = Button(janela, text='Carne', fg='black', width=7,height=3, relief='ridge', command=carne)
     btn3.place(x=380, y=80)
     btn11 = Button(janela, text='Peixe', fg='black', width=7,height=3, relief='ridge', command="noaction")
     btn11.place(x=480, y=80)
@@ -257,6 +263,10 @@ def pag_user():
     tree.heading("Receita", text="Receita")
     tree.heading("Descrição", text="Descrição")
     tree.place(x=15, y=10)
+    #Inserir os dados na treeview
+    ficheiro_tree = open("ficheiros\\nome_receitas.txt", "r", encoding="utf-8")
+    lista = ficheiro_tree.readlines()
+    ficheiro_tree.close()
 
     # Combobox para a categoria
     lbl_categorias=Label(panel1, text="Selecione a categoria a que pretende adicionar :", fg="black", font=("Helvetica", 11))
@@ -275,15 +285,57 @@ def pag_user():
     janela_add.mainloop()
 
 def sopas():
-    janela_sopas = Toplevel(janela_principal)
-    janela_sopas.geometry("600x500")
-    janela_sopas.title("Todas as receitas de Sopas")
-    painel2 = PanedWindow(janela_sopas, width = 200, height = 200, bd = "3", relief = "sunken")
-    painel2.place(x=300, y=20)
-    tree = ttk.Treeview(painel2, columns = ("Número", "Data", "Hora", "Movimento"), show = "headings")
-    tree.column("Número", width = 100, anchor = 'c')
-    tree.place(x=5, y=5)
+
+    janela_sopas = Tk()
+    janela_sopas.title('Gestão de Sopas')
+    janela_sopas.geometry("800x600")
+    janela_sopas.configure(bg='#aff7ff')
+    janela_sopas.resizable(0, 0)
+    # Container Canvas
+    ctn_canvas = Canvas(janela_sopas, width = 200, height = 200, bd = 0, relief = "sunken")
+    ctn_canvas.place(x=100, y=20)
+    # Cria a imagem
+    """img_sopas = ImageTk.PhotoImage(Image.open("imagens\\Soup.png"))
+    ctn_canvas.create_image(100,100, image = img_sopas)"""
+
+    # Listbox
+    lbox_sopas = Listbox(janela_sopas, width = 40, height = 12, bd = "3", relief = "sunken")
+    lbox_sopas.place(x=450, y=20)
+
+    # Componente treeview 
+    tree = ttk.Treeview(janela_sopas, columns = ("Receita", "Descrição"), show = "headings")
+    tree.column("Receita", width = 100, anchor="c")
+    tree.column("Descrição", width = 350, anchor="c")
+    tree.heading("Receita", text="Receita")
+    tree.heading("Descrição", text="Descrição")
+    tree.place(x=170, y=300)
     janela_sopas.mainloop()
+
+def carne():
+    janela_carne = Tk()
+    janela_carne.title('Gestão de Carne')
+    janela_carne.geometry("800x600")
+    janela_carne.configure(bg='#aff7ff')
+    janela_carne.resizable(0, 0)
+    # Container Canvas
+    ctn_canvas = Canvas(janela_carne, width = 200, height = 200, bd = 0, relief = "sunken")
+    ctn_canvas.place(x=100, y=20)
+    # Cria a imagem
+    """img_sopas = ImageTk.PhotoImage(Image.open("imagens\\Soup.png"))
+    ctn_canvas.create_image(100,100, image = img_sopas)"""
+
+    # Listbox
+    lbox_sopas = Listbox(janela_carne, width = 40, height = 12, bd = "3", relief = "sunken")
+    lbox_sopas.place(x=450, y=20)
+
+    # Componente treeview 
+    tree = ttk.Treeview(janela_carne, columns = ("Receita", "Descrição"), show = "headings")
+    tree.column("Receita", width = 100, anchor="c")
+    tree.column("Descrição", width = 350, anchor="c")
+    tree.heading("Receita", text="Receita")
+    tree.heading("Descrição", text="Descrição")
+    tree.place(x=170, y=300)
+    janela_carne.mainloop()
 
 # ---- PÁGINA INICIAL ----
 
