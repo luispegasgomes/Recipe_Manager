@@ -216,6 +216,13 @@ def pag_user():
         pag_user()
     def remover():
         lbox_gerir.delete(lbox_gerir.curselection())
+    def consultar():
+        f = open("ficheiros\\dados_ttk.txt", "r", encoding="utf-8")
+        lista = f.readlines()
+        f.close()
+        for linha in lista:
+            campos = linha.split(";")
+            tree.insert("", "end", values = (campos[0], campos[2],))
     janela_add = Toplevel(janela_principal) 
     janela_add.geometry("1366x800")
     janela_add.title("Recipe Manager")
@@ -246,7 +253,7 @@ def pag_user():
     btn1=Button(panel1, text='Adicionar', fg='white', width=40, height=1, relief='ridge', command = adicionar, bg="#499dc0")
     btn1.place(x=20, y=420)
     # Botão Consultar
-    btn_consultar=Button(janela_add, text='Consultar', fg='white', width=20, height=3, relief='ridge', command = "noaction", bg="#499dc0")
+    btn_consultar=Button(janela_add, text='Consultar', fg='white', width=20, height=3, relief='ridge', command = consultar, bg="#499dc0")
     btn_consultar.place(x=500, y=330)
     # Botão Editar
     btn_editar=Button(janela_add, text='Editar', fg='white', width=20, height=3, relief='ridge', command = "noaction", bg="#499dc0")

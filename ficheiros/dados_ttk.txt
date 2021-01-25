@@ -1,0 +1,1 @@
+nomereceita;categoria;descrição
