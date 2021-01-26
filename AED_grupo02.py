@@ -6,6 +6,7 @@ from tkinter import messagebox
 from tkinter import filedialog
 from tkinter.ttk import Combobox 
 
+global utilizador
 def login():
     def loginBe():
         with open('ficheiros\\utilizadores.txt', 'r', encoding="utf-8") as arquivoUtilizador:
@@ -15,7 +16,7 @@ def login():
         
         utilizadores = list(map(lambda x: x.replace('\n',''), utilizadores))
         senhas = list(map(lambda x: x.replace('\n',''), senhas))
-
+        global utilizador
         utilizador = txt_username.get()
         senha = txt_pw1.get()
 
@@ -152,9 +153,9 @@ def pag_admin():
     janela.imgLogo = imgLogo
     l_logo=Label(janela, image = imgLogo, width=20,height=20)
     l_logo.place(x=800, y=70)"""
-    nome = StringVar()
-    nome.set(nome.get())
-    lbl_utilizador = Label(janela, text = nome)
+    global utilizador
+
+    lbl_utilizador = Label(janela, text = utilizador)
     lbl_utilizador.place(x=880, y=10)
 
     # Implementar menu
@@ -206,12 +207,13 @@ def pag_admin():
 
 def pag_user():
     def adicionar():
-        with open('ficheiros\\nome_receitas.txt', 'a', encoding="utf-8") as arquivonreceitas:
-            arquivonreceitas.write(txt_nreceita.get() + '\n')
-        with open('ficheiros\\categorias.txt', 'a', encoding="utf-8") as arquivoCategorias:
-            arquivoCategorias.write(cb_categorias.get() + '\n')
-        with open('ficheiros\\descricao_receita.txt', 'a', encoding="utf-8") as arquivoTexto:
-            arquivoTexto.write(caixa_txt.get("1.0", "end") + '\n')
+        f_dados = open("ficheiros\\dados_ttk.txt", "a", encoding="utf-8")
+        nome_receita = txt_nreceita.get()
+        categoria = cb_categorias.get()
+        descricao = caixa_txt.get("1.0", "end")
+        linha = nome_receita  + ";" + categoria + ";" + descricao
+        f_dados.write(linha)
+        f_dados.close()
         janela_add.destroy()
         pag_user()
     def remover():
@@ -222,22 +224,35 @@ def pag_user():
         f.close()
         for linha in lista:
             campos = linha.split(";")
-            tree.insert("", "end", values = (campos[0], campos[2],))
+            tree.insert("", "end", values = (campos[0], campos[2]))
+    def verificar_admin():
+        admin_user = open('ficheiros\\admin.txt', 'r', encoding='utf-8')
+        for linha in admin_user:
+            campos = linha.split(";")
+        if (campos[0] != 'admin'):
+            print('olá')
+        else:
+            messagebox.showwarning("Error", "O utilizador não tem permissão para executar estas funções!")
     janela_add = Toplevel(janela_principal) 
     janela_add.geometry("1366x800")
     janela_add.title("Recipe Manager")
+
     # Painel Adicionar receita
     panel1 = LabelFrame(janela_add, text = 'Adicionar receita', width = 350, height = 500, bd = "3", relief = "sunken")
     panel1.place(x=10, y=10)
+
     # Painel Consultar
     panel2 = LabelFrame(janela_add, text = 'Consultar', width = 500, height = 500, bd = "3", relief = "sunken")
     panel2.place(x=800, y=10)
+    
     # Painel Edições
     panel3 = LabelFrame(janela_add, text = 'Todas as minhas receitas', width = 300, height = 300, bd = "3", relief = "sunken")
     panel3.place(x=425, y=10)
+
     # Caixa de texto
     caixa_txt=Text(panel1, width=30, height=15)
     caixa_txt.place(x=20, y=15)
+
     # Listbox
     lbox_gerir = Listbox(panel3, width = 45, height = 16, bd = "3", relief = "sunken")
     lbox_gerir.place(x=10, y=10)
@@ -256,7 +271,7 @@ def pag_user():
     btn_consultar=Button(janela_add, text='Consultar', fg='white', width=20, height=3, relief='ridge', command = consultar, bg="#499dc0")
     btn_consultar.place(x=500, y=330)
     # Botão Editar
-    btn_editar=Button(janela_add, text='Editar', fg='white', width=20, height=3, relief='ridge', command = "noaction", bg="#499dc0")
+    btn_editar=Button(janela_add, text='Editar', fg='white', width=20, height=3, relief='ridge', command = verificar_admin, bg="#499dc0")
     btn_editar.place(x=500, y=400)
     # Botão Remover
     btn_remove=Button(janela_add, text='Remover', fg='white', width=20, height=3, relief='ridge', command = remover, bg="#499dc0")
@@ -282,10 +297,11 @@ def pag_user():
     cb_categorias = Combobox(panel1, values = lista)
     cb_categorias.place(x=20, y=370)
     
-    ficheiro = open("ficheiros\\nome_receitas.txt", "r", encoding="utf-8")
+    ficheiro = open("ficheiros\\dados_ttk.txt", "r", encoding="utf-8")
     lista_categorias = []
-    for i in ficheiro:
-        lista_categorias.append(i)
+    for linha in ficheiro:
+        campos = linha.split(";")
+        lista_categorias.append(campos[0])
     for j in lista_categorias:
         lbox_gerir.insert(END, j)
 
