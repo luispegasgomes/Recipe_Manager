@@ -1,0 +1,10 @@
+Carne
+Peixe
+Breakfast
+Vegetais
+Snacks
+Sobremesas
+Bebidas
+Massas
+Outros
+Sopas
