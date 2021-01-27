@@ -6,6 +6,10 @@ from tkinter import messagebox
 from tkinter import filedialog
 from tkinter.ttk import Combobox 
 
+#def favoritos():
+
+
+
 def login():
     def loginBe():
         with open('ficheiros\\utilizadores.txt', 'r', encoding="utf-8") as arquivoUtilizador:
@@ -159,7 +163,7 @@ def pag_admin():
     simuladores_Menu = Menu(barra_Menu)
     barra_Menu.add_command(label="Home", command="noaction")
     barra_Menu.add_command(label="Todas as Receitas", command="noaction")
-    barra_Menu.add_command(label="Favoritos", command="noaction")
+    barra_Menu.add_command(label="Favoritos", command=favoritos)
     barra_Menu.add_command(label="Contacte-nos", command="noaction")
     barra_Menu.add_command(label="About Us", command="noaction")
 
