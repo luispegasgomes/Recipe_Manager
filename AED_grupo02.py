@@ -7,26 +7,56 @@ from tkinter import filedialog
 from tkinter.ttk import Combobox 
 
 global utilizador
+global fotografia_perfil
+global tipo_utilizador
 
 def login():
     def loginBe():
+        global utilizador
+        global fotografia_perfil
+        global tipo_utilizador
         with open('ficheiros\\utilizadores.txt', 'r', encoding="utf-8") as arquivoUtilizador:
             utilizadores = arquivoUtilizador.readlines()
         with open('ficheiros\\senhas.txt', 'r', encoding="utf-8") as arquivoUtilizador:
             senhas = arquivoUtilizador.readlines()
-        with open('ficheiros\\tipo_user.txt', 'r', encoding="utf-8") as arquivoUtilizador:
-            tipo_utilizador = arquivoUtilizador.readlines()
-        
+        # Lê a foto do utilizador
+        f_ler = open("ficheiros\\utilizadores.txt", "r", encoding="utf-8")
+        lista_ler = f_ler.readlines()
+        f_ler.close()
+        lista_nova = []
+        lista_fotos = []
+        for linha in lista_ler:
+            campos = linha.split(";")
+            lista_nova.append(str(campos[0]))
+            lista_fotos.append(campos[1])
+        # Lê o tipo de utilizador
+        f_tipo_user = open('ficheiros\\tipo_user.txt', 'r', encoding='utf-8')
+        lista_type = f_tipo_user.readlines()
+        f_tipo_user.close()
+        lista_type_nova = []
+        for linha in lista_type:
+            campos = linha.split(";")
+            lista_type_nova.append(campos[0])
+        # Substitui "\n" por um espaço
         utilizadores = list(map(lambda x: x.replace('\n',''), utilizadores))
         senhas = list(map(lambda x: x.replace('\n',''), senhas))
-        global utilizador
+        lista_nova = list(map(lambda x: x.replace('\n',''), lista_nova))
+        lista_fotos = list(map(lambda x: x.replace('\n',''), lista_fotos))
+        lista_type_nova = list(map(lambda x: x.replace('\n',''), lista_type_nova))
+        print(lista_type_nova)
+        
+        #global fotografia
+
         utilizador = txt_username.get()
         senha = txt_pw1.get()
 
         logado = False
 
         for i in range(len(utilizadores)):
-            if utilizador == utilizadores[i] and senha == senhas[i] and 'admin' != 'tipo_user[i]':
+            if utilizador == lista_nova[i] and senha == senhas[i]:
+                fotografia_perfil = lista_fotos[i]
+                tipo_utilizador = lista_type_nova[i]
+                print(fotografia_perfil)
                 print('Utilizador logado.')
                 login_frame.withdraw()
                 pag_admin()
@@ -48,11 +78,11 @@ def login():
     original_frame.withdraw()
         
     # Label Faça o seu login
-    lbl_username=Label(janelalogin, text="Iniciar sessão", font=("Helvetica",20))
+    lbl_username=Label(janelalogin, text="Iniciar sessão", font=("Helvetica",20), bg='#aff7ff')
     lbl_username.place(x=390, y=10)
 
     # Label username
-    lbl_username=Label(janelalogin, text="Username :")
+    lbl_username=Label(janelalogin, text="Username :", bg='#aff7ff')
     lbl_username.place(x=400, y=70)
 
     # Entry username
@@ -62,7 +92,7 @@ def login():
 
     # Label password
             
-    lbl_pw=Label(janelalogin, text="Password :")
+    lbl_pw=Label(janelalogin, text="Password :", bg='#aff7ff')
     lbl_pw.place(x=400, y=140)
 
     # Entry password
@@ -79,12 +109,15 @@ def registo():
     def registar():
         if txt_rpw.get() == txt_pw.get():
             try:
-                with open('ficheiros\\utilizadores.txt', 'a', encoding="utf-8") as arquivoUtilizador_1:
-                    arquivoUtilizador_1.write(txt_username.get() + '\n')
+                f_user = open("ficheiros\\utilizadores.txt", "a", encoding="utf-8")
+                nome_utilizador = txt_username.get()
+                linha = nome_utilizador + ";" + filename + '\n'
+                f_user.write(linha)
+                f_user.close()
                 with open('ficheiros\\senhas.txt', 'a', encoding="utf-8") as arquivoUtilizador:
                     arquivoUtilizador.write(txt_pw.get() + '\n')
-                with open('ficheiros\\tipo_user.txt', 'a', encoding="utf-8") as arquivoType:
-                    arquivoType.write('user' + '\n')
+                with open('ficheiros\\tipo_user.txt', 'a', encoding="utf-8") as arquivoTipo:
+                    arquivoTipo.write('user' + '\n')
                 janelaregisto.destroy()
                 login()
             except:
@@ -94,19 +127,17 @@ def registo():
     
     # File dialog, para selecionar ficheiro em disco
     def escolhe_imagem():
-        global img_perfil
         global filename
-        global image_perfil_id
         # file dialog, para selecionar ficheiro em disco
         filename = filedialog.askopenfilename(title = "Select file",filetypes = (("jpeg files","*.jpg"),("png files", "*.png"), ("all files","*.*")))
-        img_perfil = ImageTk.PhotoImage(file = filename)
+
 
     janelaregisto = Toplevel(janela_principal)
     janelaregisto.geometry("900x600")
     janelaregisto.title("Registo")
     janelaregisto.configure(bg='#aff7ff')
     original_frame.withdraw()
-    lbl_username=Label(janelaregisto, text="Cria a tua conta !", font=("Helvetica",20))
+    lbl_username=Label(janelaregisto, text="Cria a tua conta !", font=("Helvetica",20), bg='#aff7ff')
     lbl_username.place(x=320, y=10)
     imgLogo=ImageTk.PhotoImage(master=janelaregisto, file="imagens\\logo.png")
     janelaregisto.imgLogo = imgLogo
@@ -117,7 +148,7 @@ def registo():
     btn_foto.place(x=600, y=180)
 
     # Label email
-    lbl_email=Label(janelaregisto, text="Email :")
+    lbl_email=Label(janelaregisto, text="Email :", bg='#aff7ff')
     lbl_email.place(x=350, y=70)
 
     # Entry email
@@ -127,7 +158,7 @@ def registo():
 
     # Label username
         
-    lbl_username=Label(janelaregisto, text="Username :")
+    lbl_username=Label(janelaregisto, text="Username :", bg='#aff7ff')
     lbl_username.place(x=350, y=130)
 
     # Entry username
@@ -135,7 +166,7 @@ def registo():
     txt_username.place(x=350, y=160)
 
     # Label password
-    lbl_pw=Label(janelaregisto, text="Password :")
+    lbl_pw=Label(janelaregisto, text="Password :", bg='#aff7ff')
     lbl_pw.place(x=350, y=190)
 
     # Entry password
@@ -143,7 +174,7 @@ def registo():
     txt_pw.place(x=350, y=220)
 
     # Label repeat password
-    lbl_rpw=Label(janelaregisto, text="Confirmar password :")
+    lbl_rpw=Label(janelaregisto, text="Confirmar password :", bg='#aff7ff')
     lbl_rpw.place(x=350, y=250)
 
     # Entry repeat password
@@ -164,27 +195,24 @@ def pag_admin():
     janela.geometry("1024x600")
     janela.configure(bg='#aff7ff')
     janela.resizable(0, 0)
+    global filename
     #---IMAGEM LOGO DA APLICAÇÃO---
     imgLogo=ImageTk.PhotoImage(master=janela, file="imagens\\logo.png")
     janela.imgLogo = imgLogo
     l_logo=Label(janela, image = imgLogo, width=200, height=200)
     l_logo.place(x=20, y=20)
     #---IMAGEM PERFIL DE UTILIZADOR---
-    imgPerfil=ImageTk.PhotoImage(master=janela, file="imagens\\logo.png")
+    global fotografia_perfil
+    imgPerfil=ImageTk.PhotoImage(master=janela, file=fotografia_perfil)
     janela.imgPerfil = imgPerfil
     l_perfil=Label(janela, image = imgPerfil, width=200, height=200)
-    l_perfil.place(x=30, y=500)
+    l_perfil.place(x=420, y=350)
     global utilizador
-    global filename
-    global image_perfil_id
-    #canvas_perfil = Canvas(pag_admin, width = 110, height = 120, bd = 4, relief = "sunken")
-    #canvas_perfil.place(x=220, y=20)
-    #img_perfil = ImageTk.PhotoImage(file = filename)
-    #image_perfil_id = canvas_perfil.create_image(0, 0, anchor='nw', image=img_perfil)
 
 
-    lbl_utilizador = Label(janela, text = "Seja bem-vindo, " + utilizador, font=("Helvetica", 11))
-    lbl_utilizador.place(x=880, y=10)
+    #----SEJA BEM-VINDO UTILIZADOR---
+    lbl_utilizador = Label(janela, text = "Seja bem-vindo, " + utilizador, font=("Helvetica", 15), bg='#aff7ff')
+    lbl_utilizador.place(x=420, y=300)
 
     # Implementar menu
     barra_Menu = Menu(janela)
@@ -193,17 +221,18 @@ def pag_admin():
     simuladores_Menu = Menu(barra_Menu)
     barra_Menu.add_command(label="Home", command="noaction")
     barra_Menu.add_command(label="Todas as Receitas", command="noaction")
-    barra_Menu.add_command(label="Favoritos", command="noaction")
-    barra_Menu.add_command(label="Contacte-nos", command="noaction")
-    barra_Menu.add_command(label="About Us", command="noaction")
+    barra_Menu.add_command(label="Favoritos", command=favoritos)
+    barra_Menu.add_command(label="Top Most Rated", command="noaction")
+    barra_Menu.add_command(label="Sobre", command="noaction")
 
 
     # Botões
     btnadd = Button(janela, text='Gerir as minhas receitas', fg='white',width=35, height=3, relief='ridge', command=pag_user, bg="#499dc0")
     btnadd.place(x=380, y=1)
 
-    btn2 = Button(janela, text='Sopas', fg='black', width=7,height=3, relief='ridge', command=sopas)
+    btn2 = Button(janela, text='Sopas', fg='black', width=7, height=3, relief='ridge', command=sopas)
     btn2.place(x=280, y=80)
+
     btn3 = Button(janela, text='Carne', fg='black', width=7,height=3, relief='ridge', command=carne)
     btn3.place(x=380, y=80)
     btn11 = Button(janela, text='Peixe', fg='black', width=7,height=3, relief='ridge', command=peixe)
@@ -270,23 +299,31 @@ def pag_user():
         nome_receita = txt_nreceita.get()
         categoria = cb_categorias.get()
         descricao = caixa_txt.get("1.0", "end")
-        linha = nome_receita  + ";" + categoria + ";" + descricao
+        duracao = txt_duracao_receita.get()
+        linha = nome_receita  + ";" + categoria + ";" + duracao + ";" + descricao
         f_dados.write(linha)
         f_dados.close()
         janela_add.destroy()
         pag_user()
+    def adicionar_favoritos():
+        f_dados = open("ficheiros\\favoritos.txt", "a", encoding="utf-8")
+        nome_receita = txt_nreceita.get()
+        categoria = cb_categorias.get()
+        descricao = caixa_txt.get("1.0", "end")
+        duracao = txt_duracao_receita.get()
+        linha = nome_receita  + ";" + categoria + ";" + duracao + ";" + descricao
+        f_dados.write(linha)
+        f_dados.close()
     def ver_receitas():
         f = open("ficheiros\\dados_ttk.txt", "r", encoding="utf-8")
         lista = f.readlines()
         f.close()
         for linha in lista:
             campos = linha.split(";")
-            tree.insert("", "end", values = (campos[0], campos[1], campos[2]))
+            tree.insert("", "end", values = (campos[0], campos[1], campos[2], campos[3]))
     def verificar_admin():
-        admin_user = open('ficheiros\\tipo_user.txt', 'r', encoding='utf-8')
-        for linha in admin_user:
-            campos = linha.split(";")
-        if (campos[0] == campos[0]):
+        global tipo_utilizador
+        if (tipo_utilizador == 'admin'):
             janela_gerir_categorias = Tk()
             janela_gerir_categorias.title('Recipe Manager')
             janela_gerir_categorias.geometry("400x400")
@@ -327,16 +364,82 @@ def pag_user():
             janela_gerir_categorias.mainloop()
         else:
             messagebox.showwarning("Error", "O utilizador não tem permissão para executar estas funções!")
+    def editar():
+        def adicionar_edicao():
+            itemSelecionado = tree.selection()[0]
+            valores = tree.item(itemSelecionado,"values")
+            print(valores)
+            nome1 = str(valores[0])
+            nome2 = str(valores[1])
+            nome3 = str(valores[2])
+            tudo_junto = nome1 + ";" + nome2 + ";" + nome3
+            print(tudo_junto)
+            tree.delete(itemSelecionado)
+            with open("ficheiros\\dados_ttk.txt", "r") as f_receitas:
+                lines = f_receitas.readlines()
+            with open("ficheiros\\dados_ttk.txt", "w") as f_receitas:
+                for line in lines:
+                    campos = line.split(";")
+                    if campos[0] != nome1:
+                        f_receitas.write(line)
+            f_dados = open("ficheiros\\dados_ttk.txt", "a", encoding="utf-8")
+            nome_receita = txt_nreceita.get()
+            categoria = cb_categorias.get()
+            descricao = caixa_txt.get("1.0", "end")
+            duracao = txt_duracao_receita.get()
+            linha = nome_receita  + ";" + categoria + ";" + duracao + ";" + descricao
+            f_dados.write(linha)
+            f_dados.close()
+            pag_user()
+        janela_editar = Tk() 
+        janela_editar.geometry("350x600")
+        janela_editar.title("Editar receita")
+        # Painel Consultar
+        panel2 = LabelFrame(janela_editar, text = 'Consultar', width = 800, height = 600, bd = "3", relief = "sunken")
+        panel2.place(x=500, y=10)
+        
+        # Caixa de texto para inserção de dados
+        caixa_txt=Text(janela_editar, width=30, height=15)
+        caixa_txt.place(x=20, y=15)
+
+        # Entry nome da receita
+        txt_nreceita=Entry(janela_editar, width=40)
+        txt_nreceita.place(x=20, y=310)
+        lbl_name=Label(janela_editar, text="Nome da receita :", fg="black", font=("Helvetica", 11))
+        lbl_name.place(x=16, y=280)
+        
+        # Entry duração da receita
+        txt_duracao_receita=Entry(janela_editar, width=40)
+        txt_duracao_receita.place(x=20, y=380)
+        lbl_duracao=Label(janela_editar, text="Tempo de preparação (em min) :", fg="black", font=("Helvetica", 11))
+        lbl_duracao.place(x=16, y=340)
+            
+        # ---Botões---
+        # Botão Adicionar
+        btn1=Button(janela_editar, text='Adicionar', fg='white', width=40, height=1, relief='ridge', command = adicionar_edicao, bg="#499dc0")
+        btn1.place(x=20, y=520)
+        with open('ficheiros\\categorias.txt', 'r', encoding="utf-8") as arquivoCategorias:
+            categoria = arquivoCategorias.readlines()
+        categoria = list(map(lambda x: x.replace('\n',''), categoria))
+        lista = []
+        for linha in categoria:
+            lista.append(linha)
+        # Combobox para a categoria
+        lbl_categorias=Label(janela_editar, text="Selecione a categoria a que pretende adicionar :", fg="black", font=("Helvetica", 11))
+        lbl_categorias.place(x=16, y=430)
+        cb_categorias = Combobox(janela_editar, values = lista)
+        cb_categorias.place(x=20, y=470)
+        janela_editar.mainloop()
     janela_add = Toplevel(janela_principal) 
     janela_add.geometry("1366x800")
     janela_add.title("Recipe Manager")
 
     # Painel Adicionar receita
-    panel1 = LabelFrame(janela_add, text = 'Adicionar receita', width = 350, height = 500, bd = "3", relief = "sunken")
+    panel1 = LabelFrame(janela_add, text = 'Adicionar receita', width = 350, height = 600, bd = "3", relief = "sunken")
     panel1.place(x=10, y=10)
 
     # Painel Consultar
-    panel2 = LabelFrame(janela_add, text = 'Consultar', width = 800, height = 500, bd = "3", relief = "sunken")
+    panel2 = LabelFrame(janela_add, text = 'Consultar', width = 800, height = 600, bd = "3", relief = "sunken")
     panel2.place(x=500, y=10)
     
     # Caixa de texto para inserção de dados
@@ -348,36 +451,63 @@ def pag_user():
     txt_nreceita.place(x=20, y=310)
     lbl_name=Label(panel1, text="Nome da receita :", fg="black", font=("Helvetica", 11))
     lbl_name.place(x=16, y=280)
+    
+    # Entry duração da receita
+    txt_duracao_receita=Entry(panel1, width=40)
+    txt_duracao_receita.place(x=20, y=380)
+    lbl_duracao=Label(panel1, text="Tempo de preparação (em min) :", fg="black", font=("Helvetica", 11))
+    lbl_duracao.place(x=16, y=340)
         
     # ---Botões---
     # Botão Adicionar
     btn1=Button(panel1, text='Adicionar', fg='white', width=40, height=1, relief='ridge', command = adicionar, bg="#499dc0")
-    btn1.place(x=20, y=420)
+    btn1.place(x=20, y=520)
 
     # Botão consultar receita
-    btn_consultar_receita=Button(janela_add, text='Consultar receita', fg='white', width=20, height=3, relief='ridge', command = consultar, bg="#499dc0")
-    btn_consultar_receita.place(x=1100, y=50)
+    btn_consultar_receita=Button(panel2, text='Consultar receita', fg='white', width=20, height=3, relief='ridge', command = consultar, bg="#499dc0")
+    btn_consultar_receita.place(x=40, y=490)
 
     # Botão ver receitas
-    btn_ver_receitas=Button(janela_add, text='Ver Receitas', fg='white', width=20, height=3, relief='ridge', command = ver_receitas, bg="#499dc0")
-    btn_ver_receitas.place(x=1100, y=140)
+    btn_ver_receitas=Button(panel2, text='Ver Receitas', fg='white', width=20, height=3, relief='ridge', command = ver_receitas, bg="#499dc0")
+    btn_ver_receitas.place(x=210, y=490)
 
     # Botão Editar
-    btn_editar=Button(janela_add, text='Editar', fg='white', width=20, height=3, relief='ridge', command = verificar_admin, bg="#499dc0")
-    btn_editar.place(x=1100, y=230)
+    btn_editar=Button(panel2, text='Editar', fg='white', width=20, height=3, relief='ridge', command = editar, bg="#499dc0")
+    btn_editar.place(x=380, y=490)
+
+    # Botão Editar Categoria
+    btn_editar_categoria=Button(panel2, text='Editar Categoria', fg='white', width=20, height=3, relief='ridge', command = verificar_admin, bg="#499dc0")
+    btn_editar_categoria.place(x=550, y=420)
 
     # Botão Remover
-    btn_remove=Button(janela_add, text='Remover', fg='white', width=20, height=3, relief='ridge', command = remover, bg="#499dc0")
-    btn_remove.place(x=1100, y=320)
+    btn_remove=Button(panel2, text='Remover', fg='white', width=20, height=3, relief='ridge', command = remover, bg="#499dc0")
+    btn_remove.place(x=550, y=490)
+
+    # Botão Like
+    btn_like_img = Image.open("imagens\\like.png")
+    btn_like_img_resized = btn_like_img.resize((80, 80), Image.ANTIALIAS)
+    btn_like_imagem = ImageTk.PhotoImage(btn_like_img_resized)
+    btn1=Button(panel2, image=btn_like_imagem, text='Adicionar', fg='white', width=80, height=80, relief='ridge', command = "adicionar", bg="#499dc0")
+    btn1.place(x=620, y=20)
+
+    # Botão Favoritos
+    btn_fav_img = Image.open("imagens\\favoritos.png")
+    btn_fav_img_resized = btn_fav_img.resize((80, 80), Image.ANTIALIAS)
+    btn_fav_imagem = ImageTk.PhotoImage(btn_fav_img_resized)
+    btn1=Button(panel2, image=btn_fav_imagem, text='Adicionar', fg='white', width=80, height=80, relief='ridge', command = adicionar_favoritos, bg="#499dc0")
+    btn1.place(x=620, y=140)
+
 
     # Componente treeview 
-    tree = ttk.Treeview(panel2, columns = ("Nome da Receita", "Categoria", "Descrição"), show = "headings")
-    tree.column("Nome da Receita", width = 250, anchor="c")
+    tree = ttk.Treeview(panel2, columns = ("Nome da Receita", "Categoria", "Duração", "Descrição"), show = "headings")
+    tree.column("Nome da Receita", width = 200, anchor="c")
     tree.column("Categoria", width = 100, anchor="c")
     tree.column("Descrição", width = 100, anchor="c")
+    tree.column("Duração", width = 100, anchor="c")
     tree.heading("Nome da Receita", text="Nome da Receita")
     tree.heading("Categoria", text="Categoria")
     tree.heading("Descrição", text="Descrição")
+    tree.heading("Duração", text="Duração")
     tree.place(x=15, y=10)
     
     # Inserir os dados na treeview 
@@ -387,7 +517,7 @@ def pag_user():
 
     # Caixa de texto para a leitura de dados
     caixa_txt_leitura=Text(panel2, width=50, height=12)
-    caixa_txt_leitura.place(x=40, y=270)
+    caixa_txt_leitura.place(x=60, y=270)
 
 
     # ---COMBOBOX COM AS CATEGORIAS---
@@ -400,9 +530,9 @@ def pag_user():
         lista.append(linha)
     # Combobox para a categoria
     lbl_categorias=Label(panel1, text="Selecione a categoria a que pretende adicionar :", fg="black", font=("Helvetica", 11))
-    lbl_categorias.place(x=16, y=340)
+    lbl_categorias.place(x=16, y=430)
     cb_categorias = Combobox(panel1, values = lista)
-    cb_categorias.place(x=20, y=370)
+    cb_categorias.place(x=20, y=470)
     janela_add.mainloop()
 
 def sopas():
@@ -415,8 +545,11 @@ def sopas():
     ctn_canvas = Canvas(janela_sopas, width = 200, height = 200, bd = 0, relief = "sunken")
     ctn_canvas.place(x=20, y=20)
     # Cria a imagem
-    """img_sopas = ImageTk.PhotoImage(Image.open("imagens\\Soup.png"))
-    ctn_canvas.create_image(100,100, image = img_sopas)"""
+    #---IMAGEM LOGO DA APLICAÇÃO---
+    imgLogo=ImageTk.PhotoImage(master=janela_sopas, file="imagens\\logo.png")
+    janela_sopas.imgLogo = imgLogo
+    l_logo=Label(janela_sopas, image = imgLogo, width=200, height=200)
+    l_logo.place(x=20, y=20)
     # Caixa de texto para leitura de dados
     caixa_txt_sopas=Text(janela_sopas, width=40, height=12)
     caixa_txt_sopas.place(x=270, y=20)
@@ -437,7 +570,7 @@ def sopas():
         for linha in lista:
             campos = linha.split(";")
             if (campos[1] == 'Sopas'):
-                tree.insert("", "end", values = (campos[0], campos[1], campos[2]))
+                tree.insert("", "end", values = (campos[0], campos[1], campos[2], campos[3]))
     def remover():
         try:
             itemSelecionado = tree.selection()[0]
@@ -473,18 +606,19 @@ def sopas():
     btn_remove.place(x=640, y=260)
 
     # Componente treeview 
-    tree = ttk.Treeview(janela_sopas, columns = ("Nome da Receita", "Categoria", "Descrição"), show = "headings")
-    tree.column("Nome da Receita", width = 250, anchor="c")
+    tree = ttk.Treeview(janela_sopas, columns = ("Nome da Receita", "Categoria", "Duração", "Descrição"), show = "headings")
+    tree.column("Nome da Receita", width = 200, anchor="c")
     tree.column("Categoria", width = 100, anchor="c")
     tree.column("Descrição", width = 100, anchor="c")
+    tree.column("Duração", width = 100, anchor="c")
     tree.heading("Nome da Receita", text="Nome da Receita")
     tree.heading("Categoria", text="Categoria")
     tree.heading("Descrição", text="Descrição")
-    tree.place(x=170, y=300)
+    tree.heading("Duração", text="Duração")
+    tree.place(x=40, y=300)
     janela_sopas.mainloop()
 
 def carne():
-
     janela_carne = Tk()
     janela_carne.title('Gestão de Carne')
     janela_carne.geometry("800x600")
@@ -494,8 +628,11 @@ def carne():
     ctn_canvas = Canvas(janela_carne, width = 200, height = 200, bd = 0, relief = "sunken")
     ctn_canvas.place(x=20, y=20)
     # Cria a imagem
-    """img_sopas = ImageTk.PhotoImage(Image.open("imagens\\Soup.png"))
-    ctn_canvas.create_image(100,100, image = img_sopas)"""
+    #---IMAGEM LOGO DA APLICAÇÃO---
+    imgLogo=ImageTk.PhotoImage(master=janela_carne, file="imagens\\logo.png")
+    janela_carne.imgLogo = imgLogo
+    l_logo=Label(janela_carne, image = imgLogo, width=200, height=200)
+    l_logo.place(x=20, y=20)
     # Caixa de texto para leitura de dados
     caixa_txt_carne=Text(janela_carne, width=40, height=12)
     caixa_txt_carne.place(x=270, y=20)
@@ -516,7 +653,7 @@ def carne():
         for linha in lista:
             campos = linha.split(";")
             if (campos[1] == 'Carne'):
-                tree.insert("", "end", values = (campos[0], campos[1], campos[2]))
+                tree.insert("", "end", values = (campos[0], campos[1], campos[2], campos[3]))
     def remover():
         try:
             itemSelecionado = tree.selection()[0]
@@ -552,15 +689,16 @@ def carne():
     btn_remove.place(x=640, y=260)
 
     # Componente treeview 
-    tree = ttk.Treeview(janela_carne, columns = ("Nome da Receita", "Categoria", "Descrição"), show = "headings")
-    tree.column("Nome da Receita", width = 250, anchor="c")
+    tree = ttk.Treeview(janela_carne, columns = ("Nome da Receita", "Categoria", "Duração", "Descrição"), show = "headings")
+    tree.column("Nome da Receita", width = 200, anchor="c")
     tree.column("Categoria", width = 100, anchor="c")
     tree.column("Descrição", width = 100, anchor="c")
+    tree.column("Duração", width = 100, anchor="c")
     tree.heading("Nome da Receita", text="Nome da Receita")
     tree.heading("Categoria", text="Categoria")
     tree.heading("Descrição", text="Descrição")
-    tree.place(x=170, y=300)
-    janela_carne.mainloop()
+    tree.heading("Duração", text="Duração")
+    tree.place(x=40, y=300)
 
 def peixe():    
     janela_peixe = Tk()
@@ -572,8 +710,11 @@ def peixe():
     ctn_canvas = Canvas(janela_peixe, width = 200, height = 200, bd = 0, relief = "sunken")
     ctn_canvas.place(x=20, y=20)
     # Cria a imagem
-    """img_sopas = ImageTk.PhotoImage(Image.open("imagens\\Soup.png"))
-    ctn_canvas.create_image(100,100, image = img_sopas)"""
+    #---IMAGEM LOGO DA APLICAÇÃO---
+    imgLogo=ImageTk.PhotoImage(master=janela_peixe, file="imagens\\logo.png")
+    janela_peixe.imgLogo = imgLogo
+    l_logo=Label(janela_peixe, image = imgLogo, width=200, height=200)
+    l_logo.place(x=20, y=20)
     # Caixa de texto para leitura de dados
     caixa_txt_carne=Text(janela_peixe, width=40, height=12)
     caixa_txt_carne.place(x=270, y=20)
@@ -594,7 +735,7 @@ def peixe():
         for linha in lista:
             campos = linha.split(";")
             if (campos[1] == 'Peixe'):
-                tree.insert("", "end", values = (campos[0], campos[1], campos[2]))
+                tree.insert("", "end", values = (campos[0], campos[1], campos[2], campos[3]))
     def remover():
         try:
             itemSelecionado = tree.selection()[0]
@@ -630,14 +771,16 @@ def peixe():
     btn_remove.place(x=640, y=260)
 
     # Componente treeview 
-    tree = ttk.Treeview(janela_peixe, columns = ("Nome da Receita", "Categoria", "Descrição"), show = "headings")
-    tree.column("Nome da Receita", width = 250, anchor="c")
+    tree = ttk.Treeview(janela_peixe, columns = ("Nome da Receita", "Categoria", "Duração", "Descrição"), show = "headings")
+    tree.column("Nome da Receita", width = 200, anchor="c")
     tree.column("Categoria", width = 100, anchor="c")
     tree.column("Descrição", width = 100, anchor="c")
+    tree.column("Duração", width = 100, anchor="c")
     tree.heading("Nome da Receita", text="Nome da Receita")
     tree.heading("Categoria", text="Categoria")
     tree.heading("Descrição", text="Descrição")
-    tree.place(x=170, y=300)
+    tree.heading("Duração", text="Duração")
+    tree.place(x=40, y=300)
     janela_peixe.mainloop()
 
 def breakfast():    
@@ -650,8 +793,11 @@ def breakfast():
     ctn_canvas = Canvas(janela_breakfast, width = 200, height = 200, bd = 0, relief = "sunken")
     ctn_canvas.place(x=20, y=20)
     # Cria a imagem
-    """img_sopas = ImageTk.PhotoImage(Image.open("imagens\\Soup.png"))
-    ctn_canvas.create_image(100,100, image = img_sopas)"""
+    #---IMAGEM LOGO DA APLICAÇÃO---
+    imgLogo=ImageTk.PhotoImage(master=janela_breakfast, file="imagens\\logo.png")
+    janela_breakfast.imgLogo = imgLogo
+    l_logo=Label(janela_breakfast, image = imgLogo, width=200, height=200)
+    l_logo.place(x=20, y=20)
     # Caixa de texto para leitura de dados
     caixa_txt_carne=Text(janela_breakfast, width=40, height=12)
     caixa_txt_carne.place(x=270, y=20)
@@ -672,7 +818,7 @@ def breakfast():
         for linha in lista:
             campos = linha.split(";")
             if (campos[1] == 'Breakfast'):
-                tree.insert("", "end", values = (campos[0], campos[1], campos[2]))
+                tree.insert("", "end", values = (campos[0], campos[1], campos[2], campos[3]))
     def remover():
         try:
             itemSelecionado = tree.selection()[0]
@@ -708,14 +854,16 @@ def breakfast():
     btn_remove.place(x=640, y=260)
 
     # Componente treeview 
-    tree = ttk.Treeview(janela_breakfast, columns = ("Nome da Receita", "Categoria", "Descrição"), show = "headings")
-    tree.column("Nome da Receita", width = 250, anchor="c")
+    tree = ttk.Treeview(janela_breakfast, columns = ("Nome da Receita", "Categoria", "Duração", "Descrição"), show = "headings")
+    tree.column("Nome da Receita", width = 200, anchor="c")
     tree.column("Categoria", width = 100, anchor="c")
     tree.column("Descrição", width = 100, anchor="c")
+    tree.column("Duração", width = 100, anchor="c")
     tree.heading("Nome da Receita", text="Nome da Receita")
     tree.heading("Categoria", text="Categoria")
     tree.heading("Descrição", text="Descrição")
-    tree.place(x=170, y=300)
+    tree.heading("Duração", text="Duração")
+    tree.place(x=40, y=300)
     janela_breakfast.mainloop()
 
 def massas():
@@ -728,8 +876,11 @@ def massas():
     ctn_canvas = Canvas(janela_massas, width = 200, height = 200, bd = 0, relief = "sunken")
     ctn_canvas.place(x=20, y=20)
     # Cria a imagem
-    """img_sopas = ImageTk.PhotoImage(Image.open("imagens\\Soup.png"))
-    ctn_canvas.create_image(100,100, image = img_sopas)"""
+    #---IMAGEM LOGO DA APLICAÇÃO---
+    imgLogo=ImageTk.PhotoImage(master=janela_massas, file="imagens\\logo.png")
+    janela_massas.imgLogo = imgLogo
+    l_logo=Label(janela_massas, image = imgLogo, width=200, height=200)
+    l_logo.place(x=20, y=20)
     # Caixa de texto para leitura de dados
     caixa_txt_carne=Text(janela_massas, width=40, height=12)
     caixa_txt_carne.place(x=270, y=20)
@@ -750,7 +901,7 @@ def massas():
         for linha in lista:
             campos = linha.split(";")
             if (campos[1] == 'Massas'):
-                tree.insert("", "end", values = (campos[0], campos[1], campos[2]))
+                tree.insert("", "end", values = (campos[0], campos[1], campos[2], campos[3]))
     def remover():
         try:
             itemSelecionado = tree.selection()[0]
@@ -786,14 +937,16 @@ def massas():
     btn_remove.place(x=640, y=260)
 
     # Componente treeview 
-    tree = ttk.Treeview(janela_massas, columns = ("Nome da Receita", "Categoria", "Descrição"), show = "headings")
-    tree.column("Nome da Receita", width = 250, anchor="c")
+    tree = ttk.Treeview(janela_massas, columns = ("Nome da Receita", "Categoria", "Duração", "Descrição"), show = "headings")
+    tree.column("Nome da Receita", width = 200, anchor="c")
     tree.column("Categoria", width = 100, anchor="c")
     tree.column("Descrição", width = 100, anchor="c")
+    tree.column("Duração", width = 100, anchor="c")
     tree.heading("Nome da Receita", text="Nome da Receita")
     tree.heading("Categoria", text="Categoria")
     tree.heading("Descrição", text="Descrição")
-    tree.place(x=170, y=300)
+    tree.heading("Duração", text="Duração")
+    tree.place(x=40, y=300)
     janela_massas.mainloop()    
 
 def vegetais():
@@ -805,9 +958,11 @@ def vegetais():
     # Container Canvas
     ctn_canvas = Canvas(janela_vegetais, width = 200, height = 200, bd = 0, relief = "sunken")
     ctn_canvas.place(x=20, y=20)
-    # Cria a imagem
-    """img_sopas = ImageTk.PhotoImage(Image.open("imagens\\Soup.png"))
-    ctn_canvas.create_image(100,100, image = img_sopas)"""
+    #---IMAGEM LOGO DA APLICAÇÃO---
+    imgLogo=ImageTk.PhotoImage(master=janela_vegetais, file="imagens\\logo.png")
+    janela_vegetais.imgLogo = imgLogo
+    l_logo=Label(janela_vegetais, image = imgLogo, width=200, height=200)
+    l_logo.place(x=20, y=20)
     # Caixa de texto para leitura de dados
     caixa_txt_carne=Text(janela_vegetais, width=40, height=12)
     caixa_txt_carne.place(x=270, y=20)
@@ -828,7 +983,7 @@ def vegetais():
         for linha in lista:
             campos = linha.split(";")
             if (campos[1] == 'Vegetais'):
-                tree.insert("", "end", values = (campos[0], campos[1], campos[2]))
+                tree.insert("", "end", values = (campos[0], campos[1], campos[2], campos[3]))
     def remover():
         try:
             itemSelecionado = tree.selection()[0]
@@ -864,14 +1019,16 @@ def vegetais():
     btn_remove.place(x=640, y=260)
 
     # Componente treeview 
-    tree = ttk.Treeview(janela_vegetais, columns = ("Nome da Receita", "Categoria", "Descrição"), show = "headings")
-    tree.column("Nome da Receita", width = 250, anchor="c")
+    tree = ttk.Treeview(janela_vegetais, columns = ("Nome da Receita", "Categoria", "Duração", "Descrição"), show = "headings")
+    tree.column("Nome da Receita", width = 200, anchor="c")
     tree.column("Categoria", width = 100, anchor="c")
     tree.column("Descrição", width = 100, anchor="c")
+    tree.column("Duração", width = 100, anchor="c")
     tree.heading("Nome da Receita", text="Nome da Receita")
     tree.heading("Categoria", text="Categoria")
     tree.heading("Descrição", text="Descrição")
-    tree.place(x=170, y=300)
+    tree.heading("Duração", text="Duração")
+    tree.place(x=40, y=300)
     janela_vegetais.mainloop()    
 
 def snacks():
@@ -883,9 +1040,11 @@ def snacks():
     # Container Canvas
     ctn_canvas = Canvas(janela_snacks, width = 200, height = 200, bd = 0, relief = "sunken")
     ctn_canvas.place(x=20, y=20)
-    # Cria a imagem
-    """img_sopas = ImageTk.PhotoImage(Image.open("imagens\\Soup.png"))
-    ctn_canvas.create_image(100,100, image = img_sopas)"""
+    #---IMAGEM LOGO DA APLICAÇÃO---
+    imgLogo=ImageTk.PhotoImage(master=janela_snacks, file="imagens\\logo.png")
+    janela_snacks.imgLogo = imgLogo
+    l_logo=Label(janela_snacks, image = imgLogo, width=200, height=200)
+    l_logo.place(x=20, y=20)
     # Caixa de texto para leitura de dados
     caixa_txt_carne=Text(janela_snacks, width=40, height=12)
     caixa_txt_carne.place(x=270, y=20)
@@ -906,7 +1065,7 @@ def snacks():
         for linha in lista:
             campos = linha.split(";")
             if (campos[1] == 'Snacks'):
-                tree.insert("", "end", values = (campos[0], campos[1], campos[2]))
+                tree.insert("", "end", values = (campos[0], campos[1], campos[2], campos[3]))
     def remover():
         try:
             itemSelecionado = tree.selection()[0]
@@ -942,14 +1101,16 @@ def snacks():
     btn_remove.place(x=640, y=260)
 
     # Componente treeview 
-    tree = ttk.Treeview(janela_snacks, columns = ("Nome da Receita", "Categoria", "Descrição"), show = "headings")
-    tree.column("Nome da Receita", width = 250, anchor="c")
+    tree = ttk.Treeview(janela_snacks, columns = ("Nome da Receita", "Categoria", "Duração", "Descrição"), show = "headings")
+    tree.column("Nome da Receita", width = 200, anchor="c")
     tree.column("Categoria", width = 100, anchor="c")
     tree.column("Descrição", width = 100, anchor="c")
+    tree.column("Duração", width = 100, anchor="c")
     tree.heading("Nome da Receita", text="Nome da Receita")
     tree.heading("Categoria", text="Categoria")
     tree.heading("Descrição", text="Descrição")
-    tree.place(x=170, y=300)
+    tree.heading("Duração", text="Duração")
+    tree.place(x=40, y=300)
     janela_snacks.mainloop()    
 
 def sobremesas():
@@ -961,9 +1122,11 @@ def sobremesas():
     # Container Canvas
     ctn_canvas = Canvas(janela_sobremesas, width = 200, height = 200, bd = 0, relief = "sunken")
     ctn_canvas.place(x=20, y=20)
-    # Cria a imagem
-    """img_sopas = ImageTk.PhotoImage(Image.open("imagens\\Soup.png"))
-    ctn_canvas.create_image(100,100, image = img_sopas)"""
+    #---IMAGEM LOGO DA APLICAÇÃO---
+    imgLogo=ImageTk.PhotoImage(master=janela_sobremesas, file="imagens\\logo.png")
+    janela_sobremesas.imgLogo = imgLogo
+    l_logo=Label(janela_sobremesas, image = imgLogo, width=200, height=200)
+    l_logo.place(x=20, y=20)
     # Caixa de texto para leitura de dados
     caixa_txt_carne=Text(janela_sobremesas, width=40, height=12)
     caixa_txt_carne.place(x=270, y=20)
@@ -984,7 +1147,7 @@ def sobremesas():
         for linha in lista:
             campos = linha.split(";")
             if (campos[1] == 'Sobremesas'):
-                tree.insert("", "end", values = (campos[0], campos[1], campos[2]))
+                tree.insert("", "end", values = (campos[0], campos[1], campos[2], campos[3]))
     def remover():
         try:
             itemSelecionado = tree.selection()[0]
@@ -1020,14 +1183,16 @@ def sobremesas():
     btn_remove.place(x=640, y=260)
 
     # Componente treeview 
-    tree = ttk.Treeview(janela_sobremesas, columns = ("Nome da Receita", "Categoria", "Descrição"), show = "headings")
-    tree.column("Nome da Receita", width = 250, anchor="c")
+    tree = ttk.Treeview(janela_sobremesas, columns = ("Nome da Receita", "Categoria", "Duração", "Descrição"), show = "headings")
+    tree.column("Nome da Receita", width = 200, anchor="c")
     tree.column("Categoria", width = 100, anchor="c")
     tree.column("Descrição", width = 100, anchor="c")
+    tree.column("Duração", width = 100, anchor="c")
     tree.heading("Nome da Receita", text="Nome da Receita")
     tree.heading("Categoria", text="Categoria")
     tree.heading("Descrição", text="Descrição")
-    tree.place(x=170, y=300)
+    tree.heading("Duração", text="Duração")
+    tree.place(x=40, y=300)
     janela_sobremesas.mainloop()    
 
 def bebidas():
@@ -1039,9 +1204,11 @@ def bebidas():
     # Container Canvas
     ctn_canvas = Canvas(janela_bebidas, width = 200, height = 200, bd = 0, relief = "sunken")
     ctn_canvas.place(x=20, y=20)
-    # Cria a imagem
-    """img_sopas = ImageTk.PhotoImage(Image.open("imagens\\Soup.png"))
-    ctn_canvas.create_image(100,100, image = img_sopas)"""
+    #---IMAGEM LOGO DA APLICAÇÃO---
+    imgLogo=ImageTk.PhotoImage(master=janela_bebidas, file="imagens\\logo.png")
+    janela_bebidas.imgLogo = imgLogo
+    l_logo=Label(janela_bebidas, image = imgLogo, width=200, height=200)
+    l_logo.place(x=20, y=20)
     # Caixa de texto para leitura de dados
     caixa_txt_carne=Text(janela_bebidas, width=40, height=12)
     caixa_txt_carne.place(x=270, y=20)
@@ -1062,7 +1229,7 @@ def bebidas():
         for linha in lista:
             campos = linha.split(";")
             if (campos[1] == 'Bebidas'):
-                tree.insert("", "end", values = (campos[0], campos[1], campos[2]))
+                tree.insert("", "end", values = (campos[0], campos[1], campos[2], campos[3]))
     def remover():
         try:
             itemSelecionado = tree.selection()[0]
@@ -1098,14 +1265,16 @@ def bebidas():
     btn_remove.place(x=640, y=260)
 
     # Componente treeview 
-    tree = ttk.Treeview(janela_bebidas, columns = ("Nome da Receita", "Categoria", "Descrição"), show = "headings")
-    tree.column("Nome da Receita", width = 250, anchor="c")
+    tree = ttk.Treeview(janela_bebidas, columns = ("Nome da Receita", "Categoria", "Duração", "Descrição"), show = "headings")
+    tree.column("Nome da Receita", width = 200, anchor="c")
     tree.column("Categoria", width = 100, anchor="c")
     tree.column("Descrição", width = 100, anchor="c")
+    tree.column("Duração", width = 100, anchor="c")
     tree.heading("Nome da Receita", text="Nome da Receita")
     tree.heading("Categoria", text="Categoria")
     tree.heading("Descrição", text="Descrição")
-    tree.place(x=170, y=300)
+    tree.heading("Duração", text="Duração")
+    tree.place(x=40, y=300)
     janela_bebidas.mainloop()    
 
 def outros():
@@ -1117,9 +1286,11 @@ def outros():
     # Container Canvas
     ctn_canvas = Canvas(janela_outros, width = 200, height = 200, bd = 0, relief = "sunken")
     ctn_canvas.place(x=20, y=20)
-    # Cria a imagem
-    """img_sopas = ImageTk.PhotoImage(Image.open("imagens\\Soup.png"))
-    ctn_canvas.create_image(100,100, image = img_sopas)"""
+    #---IMAGEM LOGO DA APLICAÇÃO---
+    imgLogo=ImageTk.PhotoImage(master=janela_outros, file="imagens\\logo.png")
+    janela_outros.imgLogo = imgLogo
+    l_logo=Label(janela_outros, image = imgLogo, width=200, height=200)
+    l_logo.place(x=20, y=20)
     # Caixa de texto para leitura de dados
     caixa_txt_carne=Text(janela_outros, width=40, height=12)
     caixa_txt_carne.place(x=270, y=20)
@@ -1140,7 +1311,7 @@ def outros():
         for linha in lista:
             campos = linha.split(";")
             if (campos[1] == 'Outros'):
-                tree.insert("", "end", values = (campos[0], campos[1], campos[2]))
+                tree.insert("", "end", values = (campos[0], campos[1], campos[2], campos[3]))
     def remover():
         try:
             itemSelecionado = tree.selection()[0]
@@ -1176,15 +1347,101 @@ def outros():
     btn_remove.place(x=640, y=260)
 
     # Componente treeview 
-    tree = ttk.Treeview(janela_outros, columns = ("Nome da Receita", "Categoria", "Descrição"), show = "headings")
-    tree.column("Nome da Receita", width = 250, anchor="c")
+    tree = ttk.Treeview(janela_outros, columns = ("Nome da Receita", "Categoria", "Duração", "Descrição"), show = "headings")
+    tree.column("Nome da Receita", width = 200, anchor="c")
     tree.column("Categoria", width = 100, anchor="c")
     tree.column("Descrição", width = 100, anchor="c")
+    tree.column("Duração", width = 100, anchor="c")
     tree.heading("Nome da Receita", text="Nome da Receita")
     tree.heading("Categoria", text="Categoria")
     tree.heading("Descrição", text="Descrição")
-    tree.place(x=170, y=300)
+    tree.heading("Duração", text="Duração")
+    tree.place(x=40, y=300)
     janela_outros.mainloop() 
+
+def favoritos():
+
+    def consultar():
+        try:
+            itemSelecionado = tree.selection()[0]
+            valores = tree.item(itemSelecionado,"values")
+            descricao_receita = str(valores[2])
+            caixa_txt.insert("end", descricao_receita)
+            print(descricao_receita)
+            
+        except:
+            messagebox.showinfo(title="ERRO", message="Selecione um elemento a ser mostrado.")
+    def ver_receitas():
+        f = open("ficheiros\\favoritos.txt", "r", encoding="utf-8")
+        lista = f.readlines()
+        f.close()
+        for linha in lista:
+            campos = linha.split(";")
+            if (campos[1] == 'Outros'):
+                tree.insert("", "end", values = (campos[0], campos[1], campos[2], campos[3]))
+    def remover():
+        try:
+            itemSelecionado = tree.selection()[0]
+            valores = tree.item(itemSelecionado,"values")
+            print(valores)
+            nome1 = str(valores[0])
+            tree.delete(itemSelecionado)
+            with open("ficheiros\\favoritos.txt", "r") as f_receitas:
+                lines = f_receitas.readlines()
+            with open("ficheiros\\dados_ttk.txt", "w") as f_receitas:
+                for line in lines:
+                    campos = line.split(";")
+                    if campos[0] != nome1:
+                        f_receitas.write(line)
+        except:
+            messagebox.showinfo(title="ERRO", message="Selecione um elemento a ser mostrado.")  
+    janela_fav = Tk()
+    janela_fav.geometry("1024x600")
+    janela_fav.title("Favoritos")
+    janela_fav.configure(bg='#aff7ff')
+    #---IMAGENS DA JANELA---
+    imgLogo=PhotoImage(master=janela_fav,file="imagens\\logo.png", width=200, height=200)
+    janela_fav.imgLogo = imgLogo
+    l_logo=Label(janela_fav, image=imgLogo)
+    l_logo.place(x=70, y=50)
+    imgFav=PhotoImage(master=janela_fav,file="imagens\\favoritos.png", width=200, height=200)
+    janela_fav.imgFav = imgLogo
+    l_Fav=Label(janela_fav, image=imgFav)
+    l_Fav.place(x=70, y=280)
+
+    # Painel Consultar
+    panel2 = LabelFrame(janela_fav, text = 'Consultar', width = 550, height = 550, bd = "3", relief = "sunken", bg='#aff7ff')
+    panel2.place(x=400, y=10)
+
+    # Text para a leitura dos dados
+    caixa_txt=Text(panel2, width=62, height=10)
+    caixa_txt.place(x=20, y=350)
+        
+    # ---Botões---
+
+    # Botão Consultar
+    btn_consultar=Button(panel2, text='Consultar', fg='white', width=20, height=3, relief='ridge', command = consultar, bg="#499dc0")
+    btn_consultar.place(x=30, y=260)
+    # Botão Editar
+    btn_editar=Button(panel2, text='Ver Receitas', fg='white', width=20, height=3, relief='ridge', command = ver_receitas, bg="#499dc0")
+    btn_editar.place(x=190, y=260)
+    # Botão Remover
+    btn_remove=Button(panel2, text='Remover', fg='white', width=20, height=3, relief='ridge', command = remover, bg="#499dc0")
+    btn_remove.place(x=350, y=260)
+
+    # Componente treeview 
+    tree = ttk.Treeview(panel2, columns = ("Nome da Receita", "Categoria", "Duração", "Descrição"), show = "headings")
+    tree.column("Nome da Receita", width = 200, anchor="c")
+    tree.column("Categoria", width = 100, anchor="c")
+    tree.column("Descrição", width = 100, anchor="c")
+    tree.column("Duração", width = 100, anchor="c")
+    tree.heading("Nome da Receita", text="Nome da Receita")
+    tree.heading("Categoria", text="Categoria")
+    tree.heading("Descrição", text="Descrição")
+    tree.heading("Duração", text="Duração")
+    tree.place(x=15, y=10)
+
+    janela_fav.mainloop()
 
 # ---- PÁGINA INICIAL ----
 
