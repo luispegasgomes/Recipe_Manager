@@ -15,6 +15,7 @@ def combobox_option(*args):
         f.close()
 
         option = lista1
+
     elif selected.get() == "Categoria":
         f = open(categorias, "r", encoding="utf-8")
         lista2 = f.readlines()
@@ -23,6 +24,21 @@ def combobox_option(*args):
         option = lista2
 
     cbx2.config(values=option)
+
+def search():
+
+    if selected.get() == "Procurar por...":
+        messagebox.showerror("ERRO", "Não escolheu uma opção")
+    else:
+        lbox.delete(0, "end")
+
+        f = open("ficheiros\\dados_ttk.txt", "r", encoding="utf-8")
+        lista = f.readlines()
+        f.close()
+        for linha in lista:
+            campos = linha.split(";")
+            if cbx2.get() == campos[1]:
+                lbox.insert("end", campos[0])
 
 
 
@@ -67,7 +83,7 @@ cbx2 = ttk.Combobox(janela_catalogo, width=15)
 cbx2.place(x=460, y=50)
 
 # ---------BUTTON---------
-search_btn = Button(janela_catalogo, text="Procurar", fg="white", width=9, height=1, relief='ridge', command = "noaction", bg="#499dc0")
+search_btn = Button(janela_catalogo, text="Procurar", fg="white", width=9, height=1, relief='ridge', command = search, bg="#499dc0")
 search_btn.place(x=400, y=90)
 
 
