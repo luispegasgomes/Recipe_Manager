@@ -9,21 +9,27 @@ from tkinter.ttk import Combobox
 
 def combobox_option(*args):
 
-    if selected.get() == "Título":
+    if selected.get() == "Titulo":
         f = open(receitas, "r", encoding="utf-8")
         lista1 = f.readlines()
         f.close()
 
         option = lista1
-
     elif selected.get() == "Categoria":
         f = open(categorias, "r", encoding="utf-8")
         lista2 = f.readlines()
         f.close()
 
         option = lista2
+    elif selected.get() == "Ingredientes":
+        f = open("ficheiros\\descricao_receita.txt", "r", encoding="utf-8")
+        lista3 = f.readlines()
+        f.close()
+
+        option = lista3
 
     cbx2.config(values=option)
+
 
 def search():
 
@@ -75,7 +81,7 @@ search_lbl.place(x=400, y=50)
 selected = StringVar()
 selected.set("Procurar por...")
 
-cbx1 = ttk.Combobox(janela_catalogo, width=15, textvariable=selected, values=["Titulo","Categoria"])
+cbx1 = ttk.Combobox(janela_catalogo, width=15, textvariable=selected, values=["Titulo","Categoria","Ingredientes"])
 cbx1.bind("<<ComboboxSelected>>",combobox_option)
 cbx1.place(x=590, y=50)
 
