@@ -1,4 +1,5 @@
-eawsfrasef;Breakfast;5;esafewsrfeawsf
-asfdsadf;Outros;3;sdafsadf
-fg;Breakfast;8;dfg
+luis;Bifanas de porco;Carne;30;600 g lombo de porco cortado em fatias finas;Coloque uma bifana de cada vez entre duas folhas de película aderente e espalme-as muito bem, batendo com o fundo de uma frigideira pesada ou com o rolo da massa. Tempere a carne com o alho, descascado e picado, o sal e a malagueta, previamente limpa de sementes, cortada em pedaços. Junte a folha de louro, regue com a cerveja e deixe marinar durante pelo menos 30 minutos.
+luis;Creme de cenoura;Sopas;50;5 cenouras;Num tacho fundo, faça um ligeiro refogado com uma cebola picadinha, um dente de alho também picado, duas colheres de sopa de azeite. Junte uma curgete média, cinco cenouras grandes, duas batatas médias, tudo descascado e cortado aos cubos. Adicione a água previamente fervida e tempere de sal.
+luis;Bolo de chocolate;Sobremesas;80;4 colheres (sopa) de chocolate em pó;Em uma forma untada, despeje a massa e asse em forno médio (180 ºC) preaquecido por cerca de 40 minutos. Não se esqueça de usar uma forma alta para essa receita: como leva duas colheres de fermento, ela cresce bastante! Outra solução pode ser colocar apenas uma colher de fermento e manter a sua receita em uma forma pequena.
+
 
