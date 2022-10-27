@@ -3,8 +3,9 @@ The recipe manager application allows you to manage recipes, create new ones, ad
 
 Main features:
 
-  - Car parts by section
-  - Shopping cart
+  - Recipe catalog
+  - Most rated recipes
+  - Favorite recipes
 
 Main tools used:
 
